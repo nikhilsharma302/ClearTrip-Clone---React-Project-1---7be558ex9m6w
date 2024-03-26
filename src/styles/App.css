@@ -36,3 +36,139 @@
     transform: rotate(360deg);
   }
 }
+.logo{
+  height:100%;
+  padding-left:5%;
+}
+.logo:hover{
+  transform: scale(1.1);
+  transition :transform 1s ease-in-out; 
+}
+.navlink{
+  display:flex;
+  width:90vw;
+  justify-content: space-between;
+  align-items: center;
+  height: 8vh;
+  text-decoration: none;
+}
+.links{
+  display: flex;
+  width: 20vw;
+  height:80vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  row-gap: 1.5rem;
+  margin-top: 2%; 
+}
+.link{
+  text-decoration: none;
+  cursor: pointer;
+}
+.link:hover{
+  width:100%;
+  height:30px;
+  border-radius: 5px;
+  background-color:lightskyblue;
+  color:white;
+}
+.outlet{
+  width:60vw;
+  height:80vh;
+}
+.flights{
+  display:flex;
+  flex-direction: column;
+  justify-content:space-between;
+  align-items: center;
+  margin-top: 2%;
+}
+.mainSection{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+}
+.faredetails{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap:5px;
+}
+
+.ads{
+  width: 20vw;
+  height: 80vh;
+}
+.flightHomeHeading{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content:space-around;
+  line-height: .5;
+  width:60vw;
+  height: 10vh;
+}
+.seatdetails{
+  margin-top: 5%;
+}
+.fromto{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:100%;
+  gap:0.5%;
+}
+#from,#to{
+  padding-left:2%;
+  width:40%;
+  border-radius: 5px;
+  gap:5px;
+  height:8vh;
+  border:1px solid lightgrey;
+  font-size: large;
+  display:flex;
+  justify-content:flex-start;
+  align-items: center;
+}
+.fromtoInput{
+  width: 80%;
+  height:95%;
+  border: none;
+  font-size: large;
+  padding-left:2%;
+  outline:none;
+}
+
+.userinput{
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  height: 65vh;
+  border: 1px solid grey;
+  border:none;
+  border-radius:5px ;
+  box-shadow: 0 0 2px 2px lightgray;
+}
+.calender{
+  width:80%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  align-items: center;
+  margin: 5%;
+}
+.navBtn{
+  text-decoration: none;
+}
+.flexOption{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
