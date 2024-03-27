@@ -1,12 +1,11 @@
 import React from 'react'
-import{Link} from 'react-router-dom'
 export default function Links() {
   return (
     <div className="links">
-        <Link to ="/" className="link">Flights</Link>
-        <Link to ="/hotels" className="link">Hotels</Link>
-        <Link to ="#" className="link">Offers</Link>
-        <Link to ="/mytrips" className="link">My Trips</Link>
+        <a href ="/" className="link">Flights</a>
+        <a href="/hotels" className="link">Hotels</a>
+        <a href ="" className="link">Offers</a>
+        <a href ="/mytrips" className="link">My Trips</a>
     </div>
   )
 }

@@ -2,20 +2,26 @@ import React,{useState,useEffect} from 'react'
 import { Button } from '@mui/material'
 import '../styles/App.css'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import FlightLandIcon from '@mui/icons-material/FlightTakeoff';
+import FlightLandIcon from '@mui/icons-material/FlightLand';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import {useContext} from'react'
+import MyStore from './assets/Context';
 export default function Flights() {
   const[quantity,setQuantity]=useState(1);
   const[person,setPerson]=useState("Adults");
   const[classes,setClasses]=useState("Economy");
-
-  return (
-    <div className="flights">
+  const {setFilteredData}=useContext(MyStore)
+  useEffect(()=>{setFilteredData("FLIGHTS")
+  },[])
+    return (
+    <div >
       <div className="flightHomeHeading">   
         <h1>Search Flights</h1>
         <h5>Enjoy hassle free bookings with ClearTrip</h5>
       </div>
       <div className="userinput">
         <div className="seatdetails">
+        <PersonOutlineOutlinedIcon/>
           <select >
             <div>{quantity} {person}, {classes}</div>
             <optgroup value={person} onChange={(e)=>{setPerson(e.target.value)}} selected>
@@ -68,12 +74,12 @@ export default function Flights() {
             style={{borderRadius: "10px"}}>Armed forces fare
           </Button>
         </div>
-        <div class="fromto">
+        <div className="fromto">
           <div id="from">
             <FlightTakeoffIcon/>
             <input placeholder='Where from?' className="fromtoInput"></input>
           </div>
-          <div class="toandfromicon"></div>
+          <div className="toandfromicon"></div>
           <div id="to">
             <FlightLandIcon/>
             <input placeholder='Where to?' className="fromtoInput"></input>
@@ -86,5 +92,6 @@ export default function Flights() {
         </div>
       </div>
     </div>
+    
   )
 }

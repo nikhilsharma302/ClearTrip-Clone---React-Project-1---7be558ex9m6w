@@ -1,7 +1,11 @@
-import React from 'react'
-
+import React,{useState,useEffect,useContext} from 'react'
+import MyStore from './assets/Context'
 export default function MyTrips() {
+  const {setFilteredData}=useContext(MyStore)
+  
+  useEffect(()=>{setFilteredData("ALL")
+  },[])
   return (
-    <div>MyTrips</div>
+    <div>Hello this is MyTrip page</div>
   )
 }
