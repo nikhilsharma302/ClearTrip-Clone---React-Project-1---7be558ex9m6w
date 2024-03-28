@@ -102,6 +102,9 @@
 .offers{
   width: 20vw;
   height: 80vh;
+  font-size: small;
+  font-weight: bold;
+  margin:5% 5% 0 0;
 }
 .flightHomeHeading{
   display: flex;
@@ -172,8 +175,60 @@
   justify-content: space-between;
   align-items: center;
 }
-.heropic{
-  padding:5%;
-  width:15vw;
-  height:15vw;
+
+.addisplay{
+ width:100%;
+ min-height:50%;
+ height: fit-content;
+ margin: 2% 5%;
+ border-radius: 10px;
+ position:relative;
+ text-align: center;
+}
+.addetails{
+  position: absolute;
+  top:80%;
+}
+#iconShow{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.person{
+  width: 40vw;
+  height:40vh;
+  display:flex;
+  flex-direction:column;
+  justify-content: space-around;
+  align-items:stretch;
+  border:1px solid lightgray;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}
+.personflex{
+  height:8vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+ 
+}
+.showperson{
+  display:flex;
+  flex-direction: column;
+  width: 20vw;
+}
+.addpeople{
+  display: flex;
+  width:20vw;
+  align-items: center;
+  justify-content: space-around;
+  width:20vw;
+}
+.personbtn{
+  height:6vh;
+  width:6vh;
+  border: none;
+  border-radius: 50%;
+  font-size: larger;
 }

@@ -4,15 +4,60 @@ import '../styles/App.css'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 import {useContext} from'react'
 import MyStore from './assets/Context';
+import Persons from './assets/Persons';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Paper from '@mui/material/Paper';
 export default function Flights() {
-  const[quantity,setQuantity]=useState(1);
-  const[person,setPerson]=useState("Adults");
-  const[classes,setClasses]=useState("Economy");
+  const [showcomp,setShowComp]=useState(false);
   const {setFilteredData}=useContext(MyStore)
+  const[adults,setAdults]=useState(1);
+  const[children,setChildren]=useState(0);
+  const[infants,setInfants]=useState(0);
+  const date=new Date();
+  const[day,setDay]=useState(date.getUTCDate())
+  function setConstantValue({type, action}){
+    if(type==='adults'){
+      if(action==='increase'){
+        setAdults((prev)=>(prev+1))
+      }
+      else{
+        if(adults>1)
+          setAdults((prev)=>(prev-1))
+      }
+    }
+    else if(type==='children'){
+      if(action==='increase'){
+        setChildren((prev)=>(prev+1))
+      }
+      else{
+        if(children>0)
+        setChildren((prev)=>(prev-1))
+      }
+    }
+    else{
+      if(action==='increase'){
+        setInfants((prev)=>(prev+1))
+      }
+      else{
+        if(infants>0)
+        setInfants((prev)=>(prev-1))
+      } 
+    }
+  }
   useEffect(()=>{setFilteredData("FLIGHTS")
   },[])
+  function showPersons(){
+    setShowComp(!showcomp)
+  }
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  }
     return (
     <div >
       <div className="flightHomeHeading">   
@@ -21,59 +66,21 @@ export default function Flights() {
       </div>
       <div className="userinput">
         <div className="seatdetails">
-        <PersonOutlineOutlinedIcon/>
-          <select >
-            <div>{quantity} {person}, {classes}</div>
-            <optgroup value={person} onChange={(e)=>{setPerson(e.target.value)}} selected>
-              <option value="selected">{quantity} {person}, {classes}</option>
-              <option value="adults">Adults
-                <div className="flexOption">
-                  <div>1</div>
-                  <div className="plusIcon"></div>
-                </div>
-              </option>
-              <option value="children">Children
-                <div className="flexOption"> 
-                  <div>0</div>
-                  <div className="plusIcon"></div>
-                </div>
-              </option>
-              <option value="infants">Infants
-                <div className="flexOption">
-                 
-                  <div>0</div>
-                  <div className="plusIcon"></div>
-                </div>
-              </option>
-            </optgroup>
-            <option>
-              <Button variant="outlined">Economy</Button> {"\t"}
-            </option>
-            <option>
-              <Button variant="outlined">Business Class</Button> {"\t"}
-            </option>
-            <option>
-              <Button variant="outlined">First Class</Button> {"\t"}
-            </option>
-            <option>
-              <Button variant="outlined">Premium Economy</Button> {"\t"}
-            </option>  
-          </select>
-        </div>
-        <div className="faredetails">
-          <Button variant="outlined" 
-            style={{borderRadius: "10px"}}>Regular fare
-          </Button>
-          <Button variant="outlined"
-            style={{borderRadius: "10px"}}>Senior Citizen fare
-          </Button>
-          <Button variant="outlined"
-            style={{borderRadius: "10px"}}>Student fare
-          </Button>
-          <Button variant="outlined"
-            style={{borderRadius: "10px"}}>Armed forces fare
-          </Button>
-        </div>
+          
+          <div id="iconShow">
+            {!showcomp&&<PersonOutlineOutlinedIcon onClick={showPersons}/>}
+            {showcomp&&<PersonIcon onClick={showPersons}/>}
+            
+            <div onClick={showPersons}>{adults} Adults{children>0?`, ${children} Children`:null}{infants>0?`, ${infants} Infants`:null}</div>
+            
+            {!showcomp&&<KeyboardArrowDownIcon onClick={showPersons}/>}
+            {showcomp&&<KeyboardArrowUpIcon onClick={showPersons}/>}
+            </div>
+            {showcomp&&<Paper elevation={3}>
+          <Persons adults={adults} children={children} infants={infants} 
+          setConstantValue={setConstantValue}/>
+          </Paper>} 
+        </div> 
         <div className="fromto">
           <div id="from">
             <FlightTakeoffIcon/>
@@ -86,8 +93,7 @@ export default function Flights() {
           </div>
         </div>
         <div className="calender">
-            <input type="date" placeholder="MM/DD/YYYY"></input>
-            <input type="date" placeholder="Return"></input>
+            <input type="date" placeholder={day}></input>
             <Button variant="contained" style={{ backgroundColor:"#da8210"}}>Search Flights</Button>
         </div>
       </div>

@@ -7,10 +7,10 @@ import MyTrips from "./MyTrips";
 import Offers from "./Offers"
 import MyStore from "./assets/Context";
 import {useState} from 'react'
-
 function App() {
   const [filteredData, setFilteredData]=useState("")
   return (
+  
   <MyStore.Provider value={{filteredData,setFilteredData}}>
     <div className="App">
       <BrowserRouter>
@@ -26,6 +26,7 @@ function App() {
       </BrowserRouter>
     </div>
   </MyStore.Provider>
+ 
   )
 }
 
