@@ -7,6 +7,7 @@ export default function Offers() {
     const[searchFilter,setSearchFilter]=useState("FLIGHTS")
     const[addata,setAdData]=useState({})
     async function calling(){  
+        clearInterval(timer)
         setSearchFilter(filteredData)
 
         try{
@@ -27,10 +28,8 @@ export default function Offers() {
                     if(index===response.data.offers.length){
                         index=0
                     };
-                    setAdData(response.data.offers[index]);
-                   
+                    setAdData(response.data.offers[index]);  
                     index++;
-
                 }
                 function show(){
                     clearInterval(timer);
@@ -46,7 +45,7 @@ export default function Offers() {
     useEffect(()=>{calling();
         return ()=>clearInterval(timer)},
     [searchFilter])
-    console.log(addata)
+    //console.log(addata)
   return (
     <div className="offers">
         <div key={addata?.id} className="addisplay"  style={{backgroundImage:`url(${addata?.heroUrl})`}}>
