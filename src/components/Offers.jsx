@@ -9,7 +9,6 @@ export default function Offers() {
     async function calling(){  
         clearInterval(timer)
         setSearchFilter(filteredData)
-
         try{
             const res=await fetch(`${FLIGHT_PAGE_BASE_API}{"type":"${searchFilter}"}`,{
                 method:"GET",

@@ -11,8 +11,10 @@ import Persons from './assets/Persons';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from '@mui/material/Paper';
-
+import {FLIGHT_SEARCH_API} from './assets/Constants'
+import ShowPort from './ShowPort';
 export default function Flights() {
+  const [airportList, setAirportList]=useState([]);
   const [showcomp,setShowComp]=useState(false);
   const {setFilteredData}=useContext(MyStore)
   const[adults,setAdults]=useState(1);
@@ -27,11 +29,13 @@ export default function Flights() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [destination, setDestination]=useState("")
   const [source, setSource]=useState("")
+  const [showsrc,setshowsrc]=useState(false)
+  const [showdest,setshowdest]=useState(false)
   function setConstantValue(e,{type, action}){
     if(type==="adults"){
       if(action==='increase'){
         setAdults((prev)=>{
-        console.log(prev)
+       
         setAdultDisable(false)
         return prev+1
         }
@@ -40,7 +44,7 @@ export default function Flights() {
       else{
         if(adults>1)
           setAdults((prev)=>{
-          console.log(prev,prev-1)
+          
         if(prev==2){
             setAdultDisable(true)
         }
@@ -97,7 +101,80 @@ export default function Flights() {
   }
   function setData(e){
     setSeatClass(e.target.innerText)
+  }
+  function setCalenderDate(e){
+    const date=new Date(e.target.value);
+    const dayarr=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+    setDay(dayarr[date.getDay()])
   } 
+  async function searchFlights(){
+    // try{
+    //   const resp=await fetch(`${FLIGHT_SEARCH_API}`{source:${source},"destination:${destination}&day=${day}},{
+    //     //const resp=await fetch("https://academics.newtonschool.co/api/v1/bookingportals/?search="")
+    //     method:"GET",
+    //     headers:{projectID:"f104bi07c490"}
+    // })
+  //   console.log(resp)
+  //   if(!resp.ok){
+  //     throw new Error("Unable to search for flight, please recheck the request")
+  //   }
+  //   else{
+  //     const response=await resp.json();
+      
+  //     //console.log(response)
+  //   }
+  // }catch(err){
+  //   console.log(`${FLIGHT_SEARCH_API}{"source":${source},"destination":${destination}&day=${day}}`)
+  //   console.log(err)
+  // }
+  }
+  async function searchingPort(value,id){
+    try{
+      const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/airport?search={"city":"${value}"}`,{
+        headers:{
+          projectID:"f104bi07c490"
+        }
+      })
+      if(!resp.ok){
+        throw new Error("unable to search airport")
+      }
+      else{
+        const response=await resp.json();
+        setAirportList(response.data.airports)
+        
+        if(id==="src"){
+          setshowsrc(true);
+          setshowdest(false);
+        }
+        else{
+          setshowsrc(false);
+          setshowdest(true);
+        }
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+  function searchPort(e){
+    
+    const val=e?.target?.id?e.target.id:e
+    if(val==="src"){
+      setSource(e.target.value);
+      searchingPort(e.target.value,e.target.id)
+    }
+    else if(val==="dest"){
+      setDestination(e.target.value);
+      searchingPort(e.target.value,e.target.id)  
+    }
+    else if(e.type==="source"){
+      console.log(e.ee.place)
+      //setSource(e.ee.value);
+    }
+    else if(e.type==="destination"){
+      //setDestination(e.ee.value);
+    }
+  
+}
     return (
     <div >
       <div className="flightHomeHeading">   
@@ -120,19 +197,29 @@ export default function Flights() {
         </div> 
         <div className="fromto">
           <div id="from">
+            <section>
             <FlightTakeoffIcon/>
-            <input placeholder='Where from?' className="fromtoInput" value={source} onChange={(e)=>setSource(e.target.value)}></input>
+            <input placeholder='Where from?' id="src" className="fromtoInput" value={source} onChange={(e)=>searchPort(e)}/>
+            </section>
+            {showsrc&&<div className="showlist">
+              <ShowPort airportList={airportList} type={"source"} searchPort={searchPort}/>
+            </div>}
           </div>
           <div className="toandfromicon"></div>
           <div id="to">
+          <section>
             <FlightLandIcon/>
-            <input placeholder='Where to?'value={destination} className="fromtoInput" onChange={(e)=>setDestination(e.target.value)}></input>
+            <input placeholder='Where to?'value={destination} id="dest" className="fromtoInput" onChange={(e,id)=>setDestination(e.target.value)}></input>
+          </section>
+            {showdest&&<div className="showlist" type={"destination"}>
+              <ShowPort />
+            </div>
+            }
           </div>
         </div>
         <div className="calender">
-            <input type="date" value={day} onChange={(e)=>console.log(e)}></input>
-            <Button variant="contained" style={{ backgroundColor:"#da8210"}}>Search Flights</Button>
-            
+            <input type="date" value={day} onChange={(e)=>setCalenderDate(e)}></input>
+            <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchFlights}>Search Flights</Button> 
         </div>
       </div>
     </div>
