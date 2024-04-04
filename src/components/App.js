@@ -7,11 +7,14 @@ import MyTrips from "./MyTrips";
 import Offers from "./Offers"
 import MyStore from "./assets/Context";
 import {useState} from 'react'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 function App() {
   const [filteredData, setFilteredData]=useState("")
   return (
   
   <MyStore.Provider value={{filteredData,setFilteredData}}>
+     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -25,6 +28,7 @@ function App() {
         </Routes>  
       </BrowserRouter>
     </div>
+    </LocalizationProvider>
   </MyStore.Provider>
  
   )

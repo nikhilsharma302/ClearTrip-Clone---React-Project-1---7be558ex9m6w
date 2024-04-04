@@ -11,8 +11,10 @@ import Persons from './assets/Persons';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from '@mui/material/Paper';
-import {FLIGHT_SEARCH_API} from './assets/Constants'
+import {FLIGHT_SEARCH_API,PROJECT_ID} from './assets/Constants'
 import ShowPort from './ShowPort';
+import {DatePicker} from '@mui/x-date-pickers'
+import {DateRangePicker} from '@mui/x-date-pickers-pro'
 export default function Flights() {
   const [airportList, setAirportList]=useState([]);
   const [showcomp,setShowComp]=useState(false);
@@ -35,7 +37,6 @@ export default function Flights() {
     if(type==="adults"){
       if(action==='increase'){
         setAdults((prev)=>{
-       
         setAdultDisable(false)
         return prev+1
         }
@@ -103,36 +104,36 @@ export default function Flights() {
     setSeatClass(e.target.innerText)
   }
   function setCalenderDate(e){
-    const date=new Date(e.target.value);
+    console.log(e.$d)
+    const date=new Date(e.$d);
     const dayarr=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
     setDay(dayarr[date.getDay()])
   } 
   async function searchFlights(){
-    // try{
-    //   const resp=await fetch(`${FLIGHT_SEARCH_API}`{source:${source},"destination:${destination}&day=${day}},{
-    //     //const resp=await fetch("https://academics.newtonschool.co/api/v1/bookingportals/?search="")
-    //     method:"GET",
-    //     headers:{projectID:"f104bi07c490"}
-    // })
-  //   console.log(resp)
-  //   if(!resp.ok){
-  //     throw new Error("Unable to search for flight, please recheck the request")
-  //   }
-  //   else{
-  //     const response=await resp.json();
-      
-  //     //console.log(response)
-  //   }
-  // }catch(err){
-  //   console.log(`${FLIGHT_SEARCH_API}{"source":${source},"destination":${destination}&day=${day}}`)
-  //   console.log(err)
-  // }
+    try{
+      const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`
+      ,{
+        headers:{
+          projectID:`${PROJECT_ID}`,
+        }
+    })
+      if(!resp.ok){
+        throw new Error("Unable to search for flight, please recheck the request")
+      }
+      else{
+        const response=await resp.json();
+        console.log(response)
+        
+      }
+    }catch(err){
+    console.log(err)
+    }
   }
   async function searchingPort(value,id){
     try{
       const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/airport?search={"city":"${value}"}`,{
         headers:{
-          projectID:"f104bi07c490"
+          projectID:`${PROJECT_ID}`
         }
       })
       if(!resp.ok){
@@ -156,8 +157,7 @@ export default function Flights() {
     }
   }
   function searchPort(e){
-    
-    const val=e?.target?.id?e.target.id:e
+    const val=e?.target?.id?e.target.id:null
     if(val==="src"){
       setSource(e.target.value);
       searchingPort(e.target.value,e.target.id)
@@ -166,14 +166,6 @@ export default function Flights() {
       setDestination(e.target.value);
       searchingPort(e.target.value,e.target.id)  
     }
-    else if(e.type==="source"){
-      console.log(e.ee.place)
-      //setSource(e.ee.value);
-    }
-    else if(e.type==="destination"){
-      //setDestination(e.ee.value);
-    }
-  
 }
     return (
     <div >
@@ -202,23 +194,25 @@ export default function Flights() {
             <input placeholder='Where from?' id="src" className="fromtoInput" value={source} onChange={(e)=>searchPort(e)}/>
             </section>
             {showsrc&&<div className="showlist">
-              <ShowPort airportList={airportList} type={"source"} searchPort={searchPort}/>
+              <ShowPort airportList={airportList} type="source" searchPort={searchPort}
+               setDestination={setDestination} setSource={setSource}/>
             </div>}
           </div>
           <div className="toandfromicon"></div>
           <div id="to">
           <section>
             <FlightLandIcon/>
-            <input placeholder='Where to?'value={destination} id="dest" className="fromtoInput" onChange={(e,id)=>setDestination(e.target.value)}></input>
+            <input placeholder='Where to?' id="dest" className="fromtoInput" value={destination}  onChange={(e)=>searchPort(e)}></input>
           </section>
-            {showdest&&<div className="showlist" type={"destination"}>
-              <ShowPort />
+            {showdest&&<div className="showlist">
+            <ShowPort airportList={airportList} type="destination" searchPort={searchPort}
+               setDestination={setDestination} setSource={setSource}/>
             </div>
             }
           </div>
         </div>
         <div className="calender">
-            <input type="date" value={day} onChange={(e)=>setCalenderDate(e)}></input>
+            <DatePicker onChange={(e)=>setCalenderDate(e)}/>
             <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchFlights}>Search Flights</Button> 
         </div>
       </div>

@@ -12,7 +12,8 @@ export default function Layout() {
         <div className="mainSection">
             <Links/>
             <Outlet className="flights" />
-            <div className="offers"><Offers/>
+            <div className="offers" >
+              <Offers/>
             </div>
         </div>
         <footer></footer>

@@ -99,13 +99,7 @@
   gap:5px;
 }
 
-.offers{
-  width: 20vw;
-  height: 80vh;
-  font-size: small;
-  font-weight: bold;
-  margin:5% 5% 0 0;
-}
+
 .flightHomeHeading{
   display: flex;
   flex-direction: column;
@@ -294,4 +288,11 @@
   display: flex;
   align-items: center;
   justify-content:left;
+}
+.offers{
+  width: 20vw;
+  height: 80vh;
+  font-size: small;
+  font-weight: bold;
+  margin:5% 5% 0 0;
 }
