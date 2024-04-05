@@ -1,12 +1,13 @@
 import "../styles/App.css";
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Flights from "./Flights";
+import Flights from "./Flights/Flights";
 import Layout from "./Layout";
 import Hotels from "./Hotels";
 import MyTrips from "./MyTrips";
 import Offers from "./Offers"
 import MyStore from "./assets/Context";
 import {useState} from 'react'
+import Result from "./Flights/Results/Result";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/hotels" element={<Hotels/>}/>
             <Route path="/mytrips" element={<MyTrips/>}/>
           </Route>
+          <Route path="/flights/results" element={<Result/>}/>
           <Route path="/offers" element={
           <Offers/>}/>
         </Routes>  

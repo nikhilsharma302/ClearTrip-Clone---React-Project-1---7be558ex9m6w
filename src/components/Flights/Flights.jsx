@@ -1,21 +1,21 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import { Button } from '@mui/material'
-import '../styles/App.css'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import PersonIcon from '@mui/icons-material/Person';
-import {useContext} from'react'
-import MyStore from './assets/Context';
-import Persons from './assets/Persons';
+import MyStore from '../assets/Context';
+import Persons from '../assets/Persons';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from '@mui/material/Paper';
-import {FLIGHT_SEARCH_API,PROJECT_ID} from './assets/Constants'
-import ShowPort from './ShowPort';
+import {FLIGHT_SEARCH_API,PROJECT_ID} from '../assets/Constants'
+import ShowPort from '../ShowPort';
 import {DatePicker} from '@mui/x-date-pickers'
-import {DateRangePicker} from '@mui/x-date-pickers-pro'
+import {useNavigate} from 'react-router-dom'
 export default function Flights() {
+  const navigate=useNavigate();
+  console.log(navigate)
   const [airportList, setAirportList]=useState([]);
   const [showcomp,setShowComp]=useState(false);
   const {setFilteredData}=useContext(MyStore)
@@ -28,7 +28,7 @@ export default function Flights() {
   const[adultDisable, setAdultDisable]=useState(true)
   const[childDisable, setChildDisable]=useState(true)
   const[infantDisable, setInfantDisable]=useState(true)
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [searchedFlights, setSearchedFlight]=useState([])
   const [destination, setDestination]=useState("")
   const [source, setSource]=useState("")
   const [showsrc,setshowsrc]=useState(false)
@@ -97,14 +97,10 @@ export default function Flights() {
   function showPersons(){
     setShowComp(!showcomp)
   }
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  }
   function setData(e){
     setSeatClass(e.target.innerText)
   }
   function setCalenderDate(e){
-    console.log(e.$d)
     const date=new Date(e.$d);
     const dayarr=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
     setDay(dayarr[date.getDay()])
@@ -122,8 +118,9 @@ export default function Flights() {
       }
       else{
         const response=await resp.json();
-        console.log(response)
-        
+        setSearchedFlight(response)
+        navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`${children}`,
+        "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":searchedFlights}})
       }
     }catch(err){
     console.log(err)
@@ -189,10 +186,10 @@ export default function Flights() {
         </div> 
         <div className="fromto">
           <div id="from">
-            <section>
+            <div className="iconContainer">
             <FlightTakeoffIcon/>
             <input placeholder='Where from?' id="src" className="fromtoInput" value={source} onChange={(e)=>searchPort(e)}/>
-            </section>
+            </div>
             {showsrc&&<div className="showlist">
               <ShowPort airportList={airportList} type="source" searchPort={searchPort}
                setDestination={setDestination} setSource={setSource}/>
@@ -200,10 +197,10 @@ export default function Flights() {
           </div>
           <div className="toandfromicon"></div>
           <div id="to">
-          <section>
+          <div className="iconContainer">
             <FlightLandIcon/>
             <input placeholder='Where to?' id="dest" className="fromtoInput" value={destination}  onChange={(e)=>searchPort(e)}></input>
-          </section>
+          </div>
             {showdest&&<div className="showlist">
             <ShowPort airportList={airportList} type="destination" searchPort={searchPort}
                setDestination={setDestination} setSource={setSource}/>
@@ -213,7 +210,7 @@ export default function Flights() {
         </div>
         <div className="calender">
             <DatePicker onChange={(e)=>setCalenderDate(e)}/>
-            <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchFlights}>Search Flights</Button> 
+           <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchFlights}>Search Flights</Button>
         </div>
       </div>
     </div>
