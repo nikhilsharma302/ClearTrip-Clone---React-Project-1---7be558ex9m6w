@@ -15,7 +15,6 @@ import {DatePicker} from '@mui/x-date-pickers'
 import {useNavigate} from 'react-router-dom'
 export default function Flights() {
   const navigate=useNavigate();
-  console.log(navigate)
   const [airportList, setAirportList]=useState([]);
   const [showcomp,setShowComp]=useState(false);
   const {setFilteredData}=useContext(MyStore)
@@ -118,9 +117,9 @@ export default function Flights() {
       }
       else{
         const response=await resp.json();
-        setSearchedFlight(response)
+        //console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
         navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`${children}`,
-        "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":searchedFlights}})
+        "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination}})
       }
     }catch(err){
     console.log(err)

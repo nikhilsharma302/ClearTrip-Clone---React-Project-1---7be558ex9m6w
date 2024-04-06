@@ -3,7 +3,6 @@ import '../styles/App.css'
 export default function ShowPort({airportList,type,searchPort,setDestination,setSource}) {
     const [showUl,setShowUl]=useState(true)
     function setVal({item},type){
-        console.log(type)
         if(type==="source"){
             let newStr=`${item.iata_code} - ${item.city}, ${item.country.slice(0,2).toUpperCase()}`
             setSource(newStr)

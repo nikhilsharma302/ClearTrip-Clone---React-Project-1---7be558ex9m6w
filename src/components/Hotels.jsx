@@ -12,7 +12,7 @@ import { Room } from '@mui/icons-material';
 export default function Hotels(){
   const [showIcon,setShowIcon]=useState(false)
   const date=new Date()
-  console.log(date.toDateString())
+ 
   const[fromvalue,setfromValue]=useState()
   const {setFilteredData}=useContext(MyStore)
   const [persons,setPersons]=useState("1Room, 2 Adults")
@@ -38,12 +38,10 @@ export default function Hotels(){
           <DatePicker
             placeHolder="hello"
             value={fromvalue}
-            onChange={(e) => console.log(e.$d)}
           />
           <DatePicker
             placeHolder="hello"
             value={fromvalue}
-            onChange={(e) => console.log(e.$d)}
           />
           <div className="usercheckinout">
             <div id="usercheckinoutshow">

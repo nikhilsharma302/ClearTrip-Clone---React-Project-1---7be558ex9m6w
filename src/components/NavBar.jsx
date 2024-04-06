@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from './assets/logo.png'
 import { Button } from '@mui/material'
-"../styles/App.css"
+import "../styles/App.css"
 export default function NavBar() {
   return (
     <div>
