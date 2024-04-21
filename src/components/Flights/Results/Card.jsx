@@ -2,26 +2,30 @@ import React,{useEffect,useState} from 'react'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {FLIGHT_SEARCH_API,PROJECT_ID} from '../../assets/Constants'
-import { useSearchParams } from 'react-router-dom';
+import NorthIcon from '@mui/icons-material/North';
+import SouthIcon from '@mui/icons-material/South';
 export default function Card({flightarr,setFlightArr,srci,desti,day}) {
-    const searchparam=useSearchParams();
+    const [paramObj,setParamObj]=useState({})
     const [stopar,setStopar]=useState(false)
     const [tim,setTim]=useState(false)
     const [pr,setPr]=useState(false)
     const [ar,setAr]=useState(false)
-    const [sortstop, setSortStop]=useState(1);
-    const [sorttime,setSortTime]=useState(1);
-    const [sortpr,setSortPr]=useState(1);
-    const [sortar,setSortAr]=useState(1)
+    const [stopClass,setStopClass]=useState("stopsfilter")
+    const [departClass,setDepartClass]=useState("departurefilter")
+    const[prClass, setPrClass]=useState("pricerange")
     const [rangeval,setRangeVal]=useState(40000)
-    const [sort,setSort]=useState(0)
-    async function searchFlights(searchparamobj){
+    const [arClass, setArClass]=useState("airlinesfilter")
+    const [departSort,setDepartSort]=useState("a")
+    const [duratSort,setDuratSort]=useState("a")
+    const[arrivSort,setArrivSort]=useState("a")
+    const[priceSort, setPriceSort]=useState("a");
+
+    async function sortFlights(paramObj){
         setFlightArr([])
-        console.log(day)
-        const params = JSON.stringify(searchparamobj)
+        const params=JSON.stringify(paramObj)
         if(srci&&srci.length>0&&desti&&desti.length>0){
             try{
-                const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}&filter=${params}`
+                const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}&sort=${params}`
                 ,{
                 headers:{
                     projectID:`${PROJECT_ID}`,
@@ -29,11 +33,11 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 })
                 console.log(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}&sort=${params}`)
                 if(!resp.ok){
-                throw new Error("Unable to search for flight, please recheck the request")
+                    throw new Error("Unable to search for flight, please recheck the request")
                 }
                 else{
-                const response=await resp.json();
-                setFlightArr(response.data.flights);
+                    const response=await resp.json();
+                    setFlightArr(response.data.flights);
                 }
             }catch(err){
                 console.log(err)
@@ -41,13 +45,8 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         }
     }
     useEffect(()=>{
-        const searchparamobj={
-            "stops":sortstop,
-            "price":-sortpr,
-            "ticketPrice":{"$lte":rangeval}
-        } 
-        searchFlights(searchparamobj)
-    },[sort])
+        sortFlights(paramObj)
+    },[paramObj])
     const flightId=flightarr.map(item=>(item._id))
     let arr=[]
     async function callingdetails(i){
@@ -71,31 +70,112 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
             callingdetails(i)
     },[flightarr])
     function toggleStop(){  
-        setSort(prev=>prev+1)
-        setStopar(!stopar)
-        const stoping=stopar?1:-1
-        setSortStop(stoping)   
+        setStopar(!stopar) 
+        const val=stopClass==="stopsfilter"?"hidden":"stopsfilter"
+        setStopClass(val)
     }
     function toggleTim(){ 
         setTim(!tim)
-        const stoping=tim?1:-1
-        setSortTime(stoping)
-        setSort(prev=>prev+1)
+        const stoping=departClass==="departurefilter"?"hidden":"departurefilter"
+        setDepartClass(stoping)
+        
     }
     function togglePr(){ 
         setPr(!pr)
-        const stoping=pr?1:-1
-        setSortPr(stoping)
-        setSort(prev=>prev+1)
+        const stoping=prClass==="pricerange"?"hidden":"pricerange"
+        setPrClass(stoping)
+        
     }
     function toggleAr(){ 
         setAr(!ar)
-        const stoping=ar?1:-1
-        setSortAr(stoping)
-        console.log("div is clicked")
-        setSort(prev=>prev+1)
+        const stoping=arClass==="airlinesfilter"?"hidden":"airlinesfilter"
+        setArClass(stoping)  
     }
-    console.log(sort)
+    function depart(){
+        let prObj;
+        if(departSort==="a"){
+            prObj={
+            "timings":0
+            }
+        }
+        else if(departSort==="increase"){
+            prObj={
+                "timings":-1
+            }
+        }
+        else{
+            prObj={
+                "timings":1
+            }
+        }
+        const val=departSort==="a"?"increase":(departSort==="increase"?"decrease":"increase")
+        setDepartSort(val) 
+        setParamObj(prObj) 
+    }
+    function durat(){
+        let prObj;
+        if(duratSort==="a"){
+            prObj={
+            "duration":0
+            }
+        }
+        else if(duratSort==="increase"){
+            prObj={
+                "duration":-1
+            }
+        }
+        else{
+            prObj={
+                "duration":1
+            }
+        }
+        const val=duratSort==="a"?"increase":(duratSort==="increase"?"decrease":"increase")
+        setDuratSort(val) 
+        setParamObj(prObj)
+    }
+    function arriv(){
+        let prObj;
+        if(arrivSort==="increase"){
+            prObj={
+                "timings":-1 
+            }
+        }
+        else if(arrivSort==="decrease"){
+            prObj={
+                "timings":1   
+            }
+        }
+        else{
+            prObj={
+                "timings":0  
+            }
+        }
+        const val=arrivSort==="a"?"increase":(arrivSort==="increase"?"decrease":"increase")
+        setArrivSort(val) 
+        setParamObj(prObj)
+    }
+    
+    function pricer(){
+        let prObj;
+        if(priceSort==="increase"){
+            prObj={
+                "price":-1
+            }
+        }
+        else if(priceSort==="decrease"){
+            prObj={
+                "price":1
+            }
+        }
+        else{
+            prObj={
+                "price":0
+            }
+        }
+        const val=priceSort==="a"?"increase":(priceSort==="increase"?"decrease":"increase")
+        setPriceSort(val) 
+        setParamObj(prObj)
+    }
   return (
         flightarr.length>0&&<div className="flightmain">
             <div className="flightFilter">
@@ -108,7 +188,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                             <KeyboardArrowDownIcon/>
                             }</div>
                     </div>  
-                    <div className="stopsfilter">
+                    <div className={stopClass}>
                         <input type="checkbox" name="group1[]" /><label htmlFor="Non-stop">Non-stop</label><br/>
                         <input type="checkbox" name="group1[]" /><label htmlFor="1stop">1 stop</label><br/>
                         <input type="checkbox" name="group1[]" /><label htmlFor="2stop">2 stop</label><br/>
@@ -124,7 +204,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                             }
                         </div>
                     </div>
-                    <div className="departurefilter">
+                    <div className={departClass}>
                         <div className="cardflex1 ">
                             <div>
                                 <input type="checkbox"  name="group2[]" /><label htmlFor="Early morning">Early morning</label>
@@ -163,7 +243,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                         <div onClick={togglePr}>{pr?<KeyboardArrowUpIcon/>:
                         <KeyboardArrowDownIcon/>}</div>
                     </div>
-                    <div className="pricerange">
+                    <div className={prClass}>
                         <p className="cardflex1">Up to 60000</p>
                         <input style={{width:"100%"}} type="range" value={rangeval} min="20000" max="60000" default="40000" onChange={(e)=>setRangeVal(e.target.value)}/>
                         <div className="cardflex1">
@@ -178,7 +258,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                         <div  onClick={toggleAr}>{ar?<KeyboardArrowUpIcon/>:
                         <KeyboardArrowDownIcon/>}</div>
                     </div>
-                    <div className="airlinesfilter">
+                    <div className={arClass}>
                         <input type="checkbox" name="group3[]" /><label htmlFor="itenarary">Show multi-airline itineraries</label><br/>
                     </div>
                 </div>
@@ -187,11 +267,44 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 <thead>
                     <tr>
                         <th>Airlines</th>
-                        <th>Departure</th>
-                        <th>Duration</th>
-                        <th>Arrival</th>
-                        <th>Price</th>
-                        <th>Smart sort</th>
+                        <th onClick={depart}>
+                            Departure
+                            { 
+                                departSort==="a"?"":(departSort==="increase"? <NorthIcon sx={{fontSize:"small"}}/>
+                                :<SouthIcon sx={{fontSize:"small"}} />)
+                            }
+                            
+                        </th>
+                        <th onClick={durat}>
+                            Duration
+                            {
+                               duratSort==="a"?"":(duratSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
+
+                                :<SouthIcon sx={{fontSize:"small"}}/>)
+                            }
+                        </th>
+                        <th  onClick={arriv}>
+                            Arrival
+                            {
+                                arrivSort==="a"?"":(arrivSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
+
+                                :<SouthIcon sx={{fontSize:"small"}}/>)
+                            }
+                        </th>
+                        <th onClick={pricer} >
+                            Price
+                            {
+                               priceSort==="a"?"":( priceSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
+
+                                :<SouthIcon sx={{fontSize:"small"}}/>)
+                            }
+                        </th>
+                        <th>
+                            Smart sort
+                            <NorthIcon sx={{fontSize:"small"}}/>
+
+                            <SouthIcon sx={{fontSize:"small"}}/>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

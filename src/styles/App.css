@@ -333,9 +333,16 @@
   width:40%;
 }
 .portlist{
-  width:20%;
+  width:30%;
   background-color: rgba(256,256,256,1);
   font-size: medium;
+  list-style-type: none;
+  border:1px solid black;
+  border-radius:10px;
+}
+.liflex{
+  display:flex;
+  width:100%;
 }
 .portcode{
   width: 20%;
@@ -609,4 +616,27 @@
   height:75vh;
   max-height: 75vw;
   
+}
+.hidden{
+  display:none;
+}
+.flex{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  width:fit-content;
+}
+.flexcol{
+  display:flex;
+  flex-direction: column;
+  justify-content:  center;
+  align-items: space-between;
+  width: 100%;
+}
+.flex:hover{
+  cursor:pointer;
+  color:blue;
+}
+.active{
+  color:red
 }

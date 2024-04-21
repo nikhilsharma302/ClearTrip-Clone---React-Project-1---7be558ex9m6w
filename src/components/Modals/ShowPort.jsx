@@ -29,7 +29,7 @@ export default function ShowPort({airportList,type,searchPort,setDestination,set
         <ul ref={ref1} className="portlist" >
         {
             airportList.map(item=>(
-                <li key={item.name}   onClick={()=>setVal({item},type)}>
+                <li className="liflex" key={item.name}   onClick={()=>setVal({item},type)}>
                     <span className="portcode">
                         <span>{item.iata_code}</span>
                     </span>
