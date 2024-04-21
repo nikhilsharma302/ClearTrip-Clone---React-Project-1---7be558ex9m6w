@@ -122,7 +122,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
+  /* width: 100vw; */
   height: 80vh;
 }
 .faredetails{
@@ -415,7 +415,7 @@
 }
 .portal{
   height:100vh;
-  width:100vw;
+  width:99vw; 
   background-color:black;
   opacity: .9;
   position:fixed;
@@ -514,7 +514,7 @@
 }
 .resultips{
   display: flex;
-  width: 100vw;
+  /* width: 100vw; */
   height:3vh;
   justify-content: space-between;
   align-items: center;
@@ -551,18 +551,23 @@
   display:flex;
   justify-content: space-between;
   /* align-items: center; */
-  width:100vw;
+   width:99vw;
   height:90vh;
   column-gap: 2vw;
+  position:relative
 }
 .flightFilter{
   width:25vw;
   display: flex;
   flex-direction: column;
-  justify-content:center;
+  justify-content:flex-start;
   align-items: space-between;
   height:75vh;
   max-height: 75vh;
+  position:sticky;
+  top:100px;
+  background-color: rgba(256,256,256,1);
+
 }
 .airline,.price,.departure,.stops{
   margin-left:5%;
@@ -611,11 +616,10 @@
   width:100%
 }
 .flightdetailstable{
-  width:72vw;
-  max-width: 72vw;
+  width:70vw;
   height:75vh;
-  max-height: 75vw;
-  
+  position:absolute;
+  left:28vw;
 }
 .hidden{
   display:none;
@@ -629,9 +633,9 @@
 .flexcol{
   display:flex;
   flex-direction: column;
-  justify-content:  center;
-  align-items: space-between;
-  width: 100%;
+  justify-content:  flex-start;
+  align-items:center;
+  text-align: left;
 }
 .flex:hover{
   cursor:pointer;
@@ -639,4 +643,34 @@
 }
 .active{
   color:red
+}
+.flightDataHeadRow th{
+  background-color: black;
+  color:white;
+}
+.flightDataHeadRow th,.flightDataBodyRow td {
+ border:1px solid black;
+ /* border-collapse: collapse; */
+ margin-bottom: 2%;
+}
+/* .flightDataBodyRow {
+  margin:10vh;
+  width:100%;
+  height:10vh;
+  padding:0;
+  
+} */
+/* .flightDatacol{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: fit-content;
+  margin: 0;
+  padding:0;
+  border-bottom:1px solid black;
+} */
+.bookBtn{
+  width:80%;
+  height:90%;
 }

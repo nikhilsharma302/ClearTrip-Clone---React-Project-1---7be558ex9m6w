@@ -263,9 +263,10 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                     </div>
                 </div>
             </div>
-            <table className="flightdetailstable">
+            <table className="flightdetailstable" cellspacing="0">
                 <thead>
-                    <tr>
+                    <tr className="flightDataHeadRow" >
+                        
                         <th>Airlines</th>
                         <th onClick={depart}>
                             Departure
@@ -305,18 +306,19 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
 
                             <SouthIcon sx={{fontSize:"small"}}/>
                         </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     {
                         flightarr.map(airline=>(
-                            <tr key={airline._id}>
-                                <td>{airline.airline}</td>
+                            <tr key={airline._id} className="flightDataBodyRow">
+                                <td >{airline.airline}</td>
                                 <td>{airline.departureTime}</td>
-                                <td>{airline.duration}</td>
+                                <td >{airline.duration}h<div style={{textAlign:"center",margin:"auto",width:"80%",height:"1px", backgroundColor:"gray"}}></div>{airline. stops} stops</td>
                                 <td>{airline.arrivalTime}</td>
                                 <td>{airline.ticketPrice}</td>
-                                <td><button>Book</button></td>
+                                <td ><button className="bookBtn">Book</button></td>
                             </tr>
                         ))
                     }

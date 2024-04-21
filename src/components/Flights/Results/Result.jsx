@@ -163,7 +163,7 @@ export default function Result() {
         </div>
         <hr/>
         <div className="flightResults">
-          <div className="flightEdit"></div>
+          {/*<div className="flightEdit"></div>*/}
           <div className="flightShowContainer">
             <Card flightarr={flightarr} setFlightArr={setFlightArr} srci={srci} desti={desti} day={day}/>
           </div>
