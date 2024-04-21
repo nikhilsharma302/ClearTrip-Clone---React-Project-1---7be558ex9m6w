@@ -1,4 +1,5 @@
 import "../styles/App.css";
+import PrivacyPolicy from "./assets/PrivacyPolicy";
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Flights from "./Flights/Flights";
 import Layout from "./Layout";
@@ -10,19 +11,21 @@ import {useState} from 'react'
 import Result from "./Flights/Results/Result";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-function App() {
+ function App() {
   const [filteredData, setFilteredData]=useState("")
   return (
   
-  <MyStore.Provider value={{filteredData,setFilteredData}}>
+  <MyStore.Provider value={{"filteredData":filteredData,"setFilteredData":setFilteredData}}>
      <LocalizationProvider dateAdapter={AdapterDayjs}>
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}> 
-            <Route index element={<Flights />}/>
-            <Route path="/hotels" element={<Hotels/>}/>
-            <Route path="/mytrips" element={<MyTrips/>}/>
+             <Route index element={<Flights />}/>
+             <Route path="/flights" element={<Flights />}/>
+             <Route path="/hotels" element={<Hotels/>}/>
+             <Route path="/mytrips" element={<MyTrips/>}/>
+                <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
           </Route>
           <Route path="/flights/results" element={<Result/>}/>
           <Route path="/offers" element={
@@ -35,5 +38,5 @@ function App() {
  
   )
 }
+export default App
 
-export default App;

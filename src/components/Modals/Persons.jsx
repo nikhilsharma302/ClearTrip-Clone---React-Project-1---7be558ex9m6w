@@ -1,5 +1,5 @@
-import React,{useRef,useEffect,useState} from 'react'
-
+import React from 'react'
+import ReactDOM from 'react-dom'
 export default function Persons({adults,children,infants,setConstantValue,setData,seatClass,adultDisable,childDisable,infantDisable}) {
  const classes=[
     {name:"Economy", selected:"no"},{name:"Business Class",selected:"no"},{name:"First Class",selected:"no"},{name:"Premium Economy",selected:"no"}
@@ -13,8 +13,8 @@ export default function Persons({adults,children,infants,setConstantValue,setDat
         }   
     })
     //console.log(document.querySelector(".personbtn"))
-  return (
-    <div className="person">
+  return  ReactDOM.createPortal(
+    <div className="persons">
         <div className="personscard">
             <div className="personflex">
                 <div className="showperson">
@@ -62,6 +62,6 @@ export default function Persons({adults,children,infants,setConstantValue,setDat
             
         </div> 
 
-    </div>
+    </div>,document.getElementById('person')
   )
 }

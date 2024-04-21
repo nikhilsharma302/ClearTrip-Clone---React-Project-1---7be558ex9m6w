@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function Carous({ offerarr }) {
+  //console.log(offerarr)
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = offerarr.length;
@@ -38,7 +39,7 @@ function Carous({ offerarr }) {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box sx={{ maxWidth: 300, flexGrow: 1,marginLeft:10 }}>
       <Paper
         square
         elevation={0}

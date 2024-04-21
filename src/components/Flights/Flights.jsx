@@ -1,16 +1,16 @@
 import React,{useState,useEffect,useContext} from 'react'
 import { Button } from '@mui/material'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import MyStore from '../assets/Context';
-import Persons from '../assets/Persons';
+import Persons from '../Modals/Persons';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Paper from '@mui/material/Paper';
 import {FLIGHT_SEARCH_API,PROJECT_ID} from '../assets/Constants'
-import ShowPort from '../ShowPort';
+import ShowPort from '../Modals/ShowPort'
 import {DatePicker} from '@mui/x-date-pickers'
 import {useNavigate} from 'react-router-dom'
 export default function Flights() {
@@ -22,12 +22,12 @@ export default function Flights() {
   const[children,setChildren]=useState(0);
   const[infants,setInfants]=useState(0);
   const [seatClass,setSeatClass]=useState("Economy")
-  const date=new Date();
-  const[day,setDay]=useState(date.getUTCDate())
+  const todaydate=new Date();
+  const[day,setDay]=useState("")
   const[adultDisable, setAdultDisable]=useState(true)
   const[childDisable, setChildDisable]=useState(true)
   const[infantDisable, setInfantDisable]=useState(true)
-  const [searchedFlights, setSearchedFlight]=useState([])
+  const [fulldate,setfullDate]=useState(todaydate.toLocaleDateString())
   const [destination, setDestination]=useState("")
   const [source, setSource]=useState("")
   const [showsrc,setshowsrc]=useState(false)
@@ -38,25 +38,25 @@ export default function Flights() {
         setAdults((prev)=>{
         setAdultDisable(false)
         return prev+1
-        }
-        )
+        })
       }
       else{
-        if(adults>1)
-          setAdults((prev)=>{
-          
-        if(prev==2){
-            setAdultDisable(true)
+        if(adults>1){
+          setAdults((prev)=>{ 
+            if(prev==2){
+              setAdultDisable(true)
+            }
+            return prev-1
+          })
         }
-        return prev-1
-      })
-    }
+      }
     }
     else if(type==='children'){
       if(action==='increase'){
         setChildren((prev)=>{
           setChildDisable(false)
-          return prev+1})
+          return prev+1
+        })
       }
       else{
         if(children>0){
@@ -65,8 +65,7 @@ export default function Flights() {
               setChildDisable(true)
             }
             return prev-1;
-          }
-          )
+          })
         }
       }
     }
@@ -75,8 +74,7 @@ export default function Flights() {
         setInfants((prev)=>{
           setInfantDisable(false)
           return prev+1
-        }
-        )
+        })
       }
       else{
         if(infants>0){
@@ -85,8 +83,7 @@ export default function Flights() {
               setInfantDisable(true)
             }
             return prev-1
-          }
-          )
+          })
         }
       }
     }
@@ -100,29 +97,36 @@ export default function Flights() {
     setSeatClass(e.target.innerText)
   }
   function setCalenderDate(e){
-    const date=new Date(e.$d);
-    const dayarr=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-    setDay(dayarr[date.getDay()])
-  } 
+
+    const date = e?.$d
+    //console.log("typeof date ",typeof date)
+    setfullDate(date.toLocaleDateString())
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const reqday= daysOfWeek[date.getDay()];
+    setDay(reqday)
+  }
   async function searchFlights(){
-    try{
-      const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`
-      ,{
-        headers:{
-          projectID:`${PROJECT_ID}`,
+    if(source.length>0&&destination.length>0){
+      try{
+        const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`
+        ,{
+          headers:{
+            projectID:`${PROJECT_ID}`,
+          }
+        })
+        console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
+        if(!resp.ok){
+          throw new Error("Unable to search for flight, please recheck the request")
         }
-    })
-      if(!resp.ok){
-        throw new Error("Unable to search for flight, please recheck the request")
+        else{
+          const response=await resp.json();
+          
+          navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`$ {children}`,
+          "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination,"fulldate":fulldate}})
+        }
+      }catch(err){
+        console.log(err)
       }
-      else{
-        const response=await resp.json();
-        //console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
-        navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`${children}`,
-        "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination}})
-      }
-    }catch(err){
-    console.log(err)
     }
   }
   async function searchingPort(value,id){
@@ -138,8 +142,8 @@ export default function Flights() {
       else{
         const response=await resp.json();
         setAirportList(response.data.airports)
-        
-        if(id==="src"){
+        //console.log(response.data.airports)
+        if(id=="src"){
           setshowsrc(true);
           setshowdest(false);
         }
@@ -152,19 +156,43 @@ export default function Flights() {
       console.log(err)
     }
   }
+  function showkey(e,{type}){
+    setshowsrc(false);
+    setshowdest(false);
+    const newsrc=source.slice(0,1).toLowerCase();
+    const newdest=destination.slice(0,1).toLowerCase();
+    if(e.code==="Backspace"){
+      if(type==="src"){
+        setSource("")
+        searchingPort(newsrc,"src")
+      }
+      else {
+        setDestination("")
+        searchingPort(newdest,"dest")
+      }
+    }
+  }
   function searchPort(e){
-    const val=e?.target?.id?e.target.id:null
+    setshowsrc(false);
+    setshowdest(false);
+    const val=e.target.parentNode.id.trim()
     if(val==="src"){
       setSource(e.target.value);
-      searchingPort(e.target.value,e.target.id)
+      searchingPort(e.target.value,e.target.parentNode.id)
     }
+    
     else if(val==="dest"){
       setDestination(e.target.value);
-      searchingPort(e.target.value,e.target.id)  
+      searchingPort(e.target.value,e.target.parentNode.id)  
     }
-}
-    return (
-    <div >
+  }
+  function changetofromvals(){
+    const dest=source;
+    setSource(destination);
+    setDestination(dest)
+  }
+  return (
+    <div className="flights" >
       <div className="flightHomeHeading">   
         <h1>Search Flights</h1>
         <h5>Enjoy hassle free bookings with ClearTrip</h5>
@@ -177,42 +205,48 @@ export default function Flights() {
             <div className="divhover" onClick={showPersons}>{adults} {adults==1?"Adult, ":"Adults, "}{children===0?null:(children==1?`${children} Child, `:`${children} Children, `)}{infants===0?null:(infants===1?`${infants} Infant, `:`${infants} Infants, `)}{seatClass}</div>
             {!showcomp&&<KeyboardArrowDownIcon onClick={showPersons}/>}
             {showcomp&&<KeyboardArrowUpIcon onClick={showPersons}/>}
-            </div>
-            {showcomp&&<Paper elevation={3}>
-          <Persons adults={adults} children={children} infants={infants} 
-          setConstantValue={setConstantValue} setData={setData} seatClass={seatClass} adultDisable={adultDisable} childDisable={childDisable} infantDisable={infantDisable}  />
-          </Paper>} 
+          </div>
+          {showcomp&&
+          <Persons adults={adults} children={children} 
+            infants={infants} 
+            setConstantValue={setConstantValue}
+            setData={setData} seatClass={seatClass} 
+            adultDisable={adultDisable}
+            childDisable={childDisable}
+            infantDisable={infantDisable}
+          />} 
         </div> 
         <div className="fromto">
           <div id="from">
-            <div className="iconContainer">
-            <FlightTakeoffIcon/>
-            <input placeholder='Where from?' id="src" className="fromtoInput" value={source} onChange={(e)=>searchPort(e)}/>
+            <div className="iconContainer" id="src">
+              <FlightTakeoffIcon sx={{paddingRight:"5%"}}/>
+              <input placeholder='Where from?' id="src" className="fromtoInput" value={source} onKeyDown={(e)=>showkey(e,{type:"src"})} onChange={(e)=>searchPort(e)}/>
             </div>
             {showsrc&&<div className="showlist">
               <ShowPort airportList={airportList} type="source" searchPort={searchPort}
-               setDestination={setDestination} setSource={setSource}/>
+               setDestination={setDestination} setSource={setSource} positionLeft={"20%"} positionTop={"62%"}/>
             </div>}
           </div>
-          <div className="toandfromicon"></div>
+          <div className="toandfromicon" onClick={changetofromvals}><SyncAltIcon/></div>
           <div id="to">
-          <div className="iconContainer">
-            <FlightLandIcon/>
-            <input placeholder='Where to?' id="dest" className="fromtoInput" value={destination}  onChange={(e)=>searchPort(e)}></input>
+          <div className="iconContainer"  id="dest">
+            <FlightLandIcon sx={{paddingRight:"5%"}}/>
+            <input placeholder='Where to?' className="fromtoInput" value={destination} onKeyDown={(e)=>showkey(e,{type:"dest"})} onChange={(e)=>searchPort(e)}></input>
           </div>
             {showdest&&<div className="showlist">
             <ShowPort airportList={airportList} type="destination" searchPort={searchPort}
-               setDestination={setDestination} setSource={setSource}/>
+               setDestination={setDestination} setSource={setSource} positionLeft={"50%"} positionTop={"62%"}/>
             </div>
             }
           </div>
         </div>
         <div className="calender">
-            <DatePicker onChange={(e)=>setCalenderDate(e)}/>
+            <DatePicker onChange={(e)=>setCalenderDate(e)} sx={{height:"100%"}} size="small"/>
+            
            <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchFlights}>Search Flights</Button>
         </div>
       </div>
-    </div>
-    
+    </div> 
   )
 }
+

@@ -1,6 +1,16 @@
-import React,{useState} from 'react'
-import '../styles/App.css'
-export default function ShowPort({airportList,type,searchPort,setDestination,setSource}) {
+import React,{useState,useEffect,useRef} from 'react'
+import ReactDOM from 'react-dom'
+import '../../styles/App.css'
+
+export default function ShowPort({airportList,type,searchPort,setDestination,setSource,positionLeft,positionTop}) {
+    const ref1=useRef()
+    console.log(ref1.current)
+    useEffect(()=>{
+        ref1.current.style.position="absolute";
+        ref1.current.style.left=positionLeft
+        ref1.current.style.top=positionTop
+
+    },[])
     const [showUl,setShowUl]=useState(true)
     function setVal({item},type){
         if(type==="source"){
@@ -13,12 +23,13 @@ export default function ShowPort({airportList,type,searchPort,setDestination,set
         }
         setShowUl(false)
     }
-  return (
+  return ReactDOM.createPortal (
     showUl&&
-    <ul>
+    <div className="ports">
+        <ul ref={ref1} className="portlist" >
         {
             airportList.map(item=>(
-                <li key={item.name} className="ports"  onClick={()=>setVal({item},type)}>
+                <li key={item.name}   onClick={()=>setVal({item},type)}>
                     <span className="portcode">
                         <span>{item.iata_code}</span>
                     </span>
@@ -36,5 +47,6 @@ export default function ShowPort({airportList,type,searchPort,setDestination,set
             ))
         }
     </ul>
+    </div>,document.getElementById("port")
   )
 }

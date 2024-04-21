@@ -36,21 +36,54 @@
     transform: rotate(360deg);
   }
 }
-.logo{
-  height:100%;
-  padding-left:5%;
-}
-.logo:hover{
-  transform: scale(1.1);
-  transition :transform 1s ease-in-out; 
-}
-.navlink{
+.navbar{
   display:flex;
-  width:90vw;
+  width:100vw;
   justify-content: space-between;
   align-items: center;
-  height: 8vh;
+  height: 7vh;
   text-decoration: none;
+  margin-bottom:3%
+}
+.logocontainer{
+  width:70vw;
+  height:80%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.logo{
+  width:15%;
+  height:70%;
+  padding-left:5%;
+  cursor:"pointer"
+}
+
+.logo:hover{
+  transform: scaleX(1.1);
+  transition :transform 1s ease-in-out; 
+}
+.login{
+  display:flex;
+  width:30vw;
+  justify-content: flex-end;
+  align-items: center;
+  height:80%;
+}
+.userIcon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height:90%;
+  margin-right:30%;
+  background-color: white;
+  border:none;
+}
+.userIcon:hover{
+  /* transform: scale(1.1);
+  transition :transform 1s ease-in-out;  */
+  cursor:pointer
 }
 .links{
   display: flex;
@@ -107,20 +140,29 @@
   justify-content:space-around;
   line-height: .5;
   width:60vw;
+  margin-top:5%;
   height: 10vh;
-}
-.seatdetails{
-  margin-top: 5%;
 }
 .fromto{
   display: flex;
   align-items: center;
   justify-content: center;
   width:100%;
-  gap:0.5%;
+  position: relative;
+}
+.toandfromicon{
+  position: absolute;
+  top:auto;
+  height:7vh;
+  width:7vh;
+  border: 1px solid black;
+  border-radius:50%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 #from,#to{
-  padding-left:2%;
+  padding-left:5%;
   width:40%;
   border-radius: 5px;
   gap:5px;
@@ -134,7 +176,7 @@
 }
 .fromtoInput{
   width: 80%;
-  height:95%;
+  height:90%;
   border: none;
   font-size: large;
   padding-left:2%;
@@ -153,6 +195,13 @@
   border:none;
   border-radius:5px ;
   box-shadow: 0 0 2px 2px lightgray;
+ 
+}
+.seatdetails{
+  margin-top: 5%;
+  width:100%;
+  position:relative;
+  
 }
 .calender{
   width:80%;
@@ -161,6 +210,7 @@
   padding: 0 5%;
   align-items: center;
   margin: 5%;
+  height:5vh;
 }
 .navBtn{
   text-decoration: none;
@@ -193,8 +243,11 @@
 #iconShow:hover{
   cursor:pointer
 }
-.person{
-  width: 40vw;
+.persons{
+  position:absolute;
+  top:42%;
+  left:25%;
+  width: 40%;
   height:fit-content;
   display:flex;
   flex-direction:column;
@@ -204,6 +257,7 @@
   border-radius: 10px;
   margin-bottom: 2%;
   padding:0;
+  background-color: rgba(256,256,256,1);
   
 }
 .personflex{
@@ -268,14 +322,20 @@
   flex-direction: column;
   font-size: small;
   justify-content: flex-start;
-  width:100%;
+  width:50%;
   z-index: 1;
+  position:relative;
 }
 .ports{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width:100%;
+  width:40%;
+}
+.portlist{
+  width:20%;
+  background-color: rgba(256,256,256,1);
+  font-size: medium;
 }
 .portcode{
   width: 20%;
@@ -309,10 +369,244 @@
   border:1px solid black;
 }
 .iconContainer{
-  
   width: 100%;
   height:100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+.dates{
+  display: flex;
+  width:70%;
+  justify-content: center;
+  align-items: center;
+}
+#usercheckinoutshow{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:flex-start;
+  height:30vh;
+  width:30%
+}
+.moreopt{
+  text-decoration: underline;
+  color:blue;
+}
+.flexIconDiv{
+  display:flex
+}
+.personOptsDiv{
+  width:100%;
+  height:100%;
+}
+.personOpts{
+  display:flex;
+  justify-content: flex-start;
+  align-items:center;
+  padding:0 15%;
+}
+.portal{
+  height:100vh;
+  width:100vw;
+  background-color:black;
+  opacity: .9;
+  position:fixed;
+  top:0;
+  left:0;
+}
+.hidebackground{
+  position: relative;
+  top:20%;
+  left:20%;
+  width:60%;
+  height:60%;
+  display:flex;
+  border-radius:5px;
+  background-color: rgba(256,256,256,1);   
+}
+.signupcard{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:flex;
+  border-radius: 5px;
+  background-color: rgb(256,256,256); 
+}
+.signupcarous{
+  width:50%;
+  height:100%;  
+  background-color: rgba(256,256,256,1); 
+}
+.signupotp{
+  width:50%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  opacity:1
+}
+.crossdiv{
+  display:flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* background-color: blue; */
+  width: 90%;
+  height:10%;
+}
+.otpsection{
+  display: flex;
+  flex-direction: column;
+  width:90% ;
+  height:40%;
+  justify-content:space-between;
+  align-items: center;
+}
+.signuppolicy{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height:20%;
+}
+.phonedetails{
+  height:30%;
+  width: 100%;
+}
+.phonecode,.phonenumber{
+  height:100%;
+}
+.phonecode{
+  width:20%;
+  margin-right:1%
+}
+.phonenumber{
+  width:75%;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: none;
+  
+}
+#otpbtn{
+  margin-top:5%;
+  color: white;
+  background-color: black;
+  width:100%;
+  height:30%;
+  border-radius:10px;
+  padding:2% 0 ;
+}
+.signuphr{
+  width: 100%;
+  height:.5px;
+  color:gray;
+  background-color: gray;
+  box-shadow: none;
+}
+.resultips{
+  display: flex;
+  width: 100vw;
+  height:3vh;
+  justify-content: space-between;
+  align-items: center;
+  margin:1%
+}
+.resultsinps{
+  height:3vh;
+  width:50%;
+  display:flex ;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 1%;
+}
+.resinps{
+  box-shadow: none;
+  height:4vh;
+ 
+}
+.inpsteags{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.resultsBtnsel{
+  width: 50%;
+  height:100%;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 5%;
+}
+.flightmain{
+  display:flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  width:100vw;
+  height:90vh;
+  column-gap: 2vw;
+}
+.flightFilter{
+  width:25vw;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: space-between;
+  height:75vh;
+  max-height: 75vh;
+}
+.airline,.price,.departure,.stops{
+  margin-left:5%;
+  display: flex;
+  width:100%;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  font-size:small;
+  height: fit-content;
+  max-height: 20vh;
+  margin-top:5%;
+}
+.departurefilter{
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  /* justify-content:flex-start; */
+  /* align-items: space-between; */
+  gap:none;
+  height:20vh;
+  /* background-color: pink; */
+
+}
+.cardflex{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: medium;
+  font-weight: bold;
+  height:3vh;
+  
+}
+.cardflex1{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size:smaller;
+  font-weight: normal;
+  max-height:3vh;
+ 
+}
+.pricerange{
+  width:100%
+}
+.flightdetailstable{
+  width:72vw;
+  max-width: 72vw;
+  height:75vh;
+  max-height: 75vw;
+  
 }
