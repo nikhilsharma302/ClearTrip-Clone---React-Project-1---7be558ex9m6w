@@ -38,11 +38,11 @@ export default function Result() {
       else{
         const response=await resp.json();
         setairports(response.data.airports)
-        if(iptype==="src"){
+        if(iptype==="src" && response.data.airports.length>0){
           setsrcair(true);
           setdestair(false);
         }
-        else{
+        else if(iptype==="dest" && response.data.airports.length>0){
           setsrcair(false);
           setdestair(true);
         }
@@ -102,9 +102,10 @@ export default function Result() {
           throw new Error("Unable to search for flight, please recheck the request")
         }
         else{
-          //console.log(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}`)
+          // console.log(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}`)
           const response=await resp.json();
           setFlightArr(response.data.flights);
+          console.log(response.data.flights)
         }
       }catch(err){
         console.log(err)
@@ -122,7 +123,7 @@ export default function Result() {
               srcair&&
               <div className="showlist">
                 <ShowPort airportList={airports} type="source" searchPort={searchPort}
-                  setDestination={setDestination} setSource={setSource} positionLeft={"1%"} positionTop={"15%"}/>
+                  setDestination={setDestination} setSource={setSource} positionLeft={"1%"} positionTop={"17%"} blurr={true} width={"30vw"}/>
               </div>
             }
             </div>
@@ -137,7 +138,9 @@ export default function Result() {
                   type="destination" searchPort={searchPort}
                   setDestination={setDestination}
                   setSource={setSource}
-                  positionLeft={"10%"} positionTop={"15%"}
+                  positionLeft={"10%"} positionTop={"17%"}
+                  blurr={true}
+                  width={"30vw"}
                   />
               </div>
             }

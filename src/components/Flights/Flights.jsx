@@ -143,11 +143,11 @@ export default function Flights() {
         const response=await resp.json();
         setAirportList(response.data.airports)
         //console.log(response.data.airports)
-        if(id=="src"){
+        if(id=="src" && response.data.airports.length>0){
           setshowsrc(true);
           setshowdest(false);
         }
-        else{
+        else if(id==="dest" && response.data.airports.length>0){
           setshowsrc(false);
           setshowdest(true);
         }
@@ -224,7 +224,7 @@ export default function Flights() {
             </div>
             {showsrc&&<div className="showlist">
               <ShowPort airportList={airportList} type="source" searchPort={searchPort}
-               setDestination={setDestination} setSource={setSource} positionLeft={"20%"} positionTop={"62%"}/>
+               setDestination={setDestination} blur={false} setSource={setSource} positionLeft={"17%"} positionTop={"69%"} width={"24%"}/>
             </div>}
           </div>
           <div className="toandfromicon" onClick={changetofromvals}><SyncAltIcon/></div>
@@ -235,7 +235,7 @@ export default function Flights() {
           </div>
             {showdest&&<div className="showlist">
             <ShowPort airportList={airportList} type="destination" searchPort={searchPort}
-               setDestination={setDestination} setSource={setSource} positionLeft={"50%"} positionTop={"62%"}/>
+               setDestination={setDestination} blurr={false} setSource={setSource} positionLeft={"45%"} positionTop={"69%"} width={"24%"}/>
             </div>
             }
           </div>

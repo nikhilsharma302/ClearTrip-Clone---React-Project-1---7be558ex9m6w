@@ -333,9 +333,9 @@
   width:40%;
 }
 .portlist{
-  width:30%;
+  /* width:25%; */
   background-color: rgba(256,256,256,1);
-  font-size: medium;
+  font-size: small;
   list-style-type: none;
   border:1px solid black;
   border-radius:10px;
@@ -413,62 +413,67 @@
   align-items:center;
   padding:0 15%;
 }
-.portal-background {
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.8); /* Background with opacity */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999; /* Ensure it's behind the modal */
-}
 .portal{
-  position: fixed;
-  top: 20%;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-  display: flex;
-  border-radius: 10px;
-  background-color: rgba(256, 256, 256, 1);
-  z-index: 1000;
+  height:100vh;
+  width:99vw; 
+  /* background-color:black;
+  opacity: .9; */
+  position:fixed;
+  top:0;
+  left:0;
 }
-/* .signupcard{
+.flightCard{
+  height: fit-content;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.flightImg{
+  height:3vw;
+  width:3vw;
+  border-radius: 10%;
+}
+
+.hidebackground{
+  position: absolute;
+  top:0%;
+  left:0%;
+  width:100%;
+  height:100%;
+  background-color: rgba(0,0,0,.9);   
+}
+.signupcard{
   position: absolute;
   top:20%;
   left:20%;
   width:60%;
   height:60%;
   display:flex;
-  border-radius: 5px;
-  background-color:rgba(256,256,256,1)  
-} */
-.signupcard{
-  display:flex;
-  border-radius: 5px;
-  align-items: flex-end;
   justify-content: center;
-  
-  height: 100%;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgb(256,256,256); 
 }
 .signupcarous{
   width:48%;
-  height:98%;  
-  border-radius: 5px;
+  height:95%;  
+  /* background-color: yellow; */
+
 }
 .signupotp{
   width:48%;
-  height:98%;
+  height:95%;
   display:flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  
+  /* background-color: orange; */
 }
 .crossdiv{
   display:flex;
   align-items: center;
   justify-content: flex-end;
+  /* background-color: blue; */
   width: 90%;
   height:10%;
 }
@@ -501,7 +506,8 @@
   width:75%;
   border-radius: 5px;
   text-align: center;
-  box-shadow: none; 
+  box-shadow: none;
+  
 }
 #otpbtn{
   margin-top:5%;
@@ -521,6 +527,7 @@
 }
 .resultips{
   display: flex;
+  /* width: 100vw; */
   height:3vh;
   justify-content: space-between;
   align-items: center;
@@ -537,6 +544,7 @@
 .resinps{
   box-shadow: none;
   height:4vh;
+ 
 }
 .inpsteags{
   display: flex;
@@ -555,64 +563,76 @@
 .flightmain{
   display:flex;
   justify-content: space-between;
-  width:95vw;
+  /* align-items: center; */
+   width:99vw;
+  height:90vh;
+  column-gap: 2vw;
   position:relative
 }
 .flightFilter{
   width:25vw;
-  min-height:100vh;
   display: flex;
   flex-direction: column;
-  justify-content:space-around;
+  justify-content:flex-start;
   align-items: space-between;
+  height:75vh;
+  max-height: 75vh;
   position:sticky;
-  bottom:0;
+  top:0;
+  background-color: rgba(256,256,256,1);
+
 }
 .airline,.price,.departure,.stops{
-  margin-left:2%;
+  margin-left:5%;
   display: flex;
   width:100%;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
   font-size:small;
-  max-height:35vh;
-  min-height:fit-content;
-  margin-bottom:2%;
-  justify-content: space-evenly;
+  height: fit-content;
+  max-height: 20vh;
+  margin-top:5%;
 }
 .departurefilter{
   width:100%;
   display:flex;
   flex-direction: column;
+  /* justify-content:flex-start; */
+  /* align-items: space-between; */
+  gap:none;
+  height:20vh;
+  /* background-color: pink; */
+
 }
 .cardflex{
   width:100%;
   display:flex;
   justify-content: space-between;
   align-items: center;
-  font-size: normal;
+  font-size: medium;
   font-weight: bold;
   height:3vh;
+  
 }
 .cardflex1{
   width:100%;
   display:flex;
   justify-content: space-between;
   align-items: center;
-  font-size:normal;
+  font-size:smaller;
   font-weight: normal;
+  max-height:3vh;
+ 
 }
 .pricerange{
   width:100%
 }
 .flightdetailstable{
-  width:65vw;
-  /* height:75vh; */
+  width:70vw;
+  height:75vh;
   position:absolute;
-  border-collapse: separate;
-  border-spacing:0 1vh;
-  position: relative;
+  left:28vw;
 }
 .hidden{
   display:none;
@@ -637,33 +657,61 @@
 .active{
   color:red
 }
+.flightDataHeadRow {
+  height:10vh;
+  position:sticky;
+  top:0;
+}
 .flightDataHeadRow th{
   background-color: black;
   color:white;
-  position:sticky;
-  top:0;
-  padding:2% 0;
-  margin-top:0;
+  display:flex;
+  justify-content:space-around;
+  align-items: center;
+  width: 100%;
+  height:10vh;
 }
-.flightDataHeadRow th,.flightDataBodyRow td {
- border:1px solid grey; 
+.flightDataHeadRow th:hover{
+  cursor: pointer;
 }
-.left{
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-right:none;
+flightDataBodyRow{
+  width:100%;
+  background-color: green;
 }
-.right{
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-left:none;
+.flightDataBodyRow td{
+  display:flex;
+  justify-content: space-around;
+  height:20vh;
+  margin:2% 0;
+  border-radius: 5px;
+  border:2px solid lightgray;
+  align-items: center;
+  width: 100%;
+  /* background-color: yellow; */
 }
-.middle{
-  border-left: 0;
-  border-right: 0;
-}
-
 .bookBtn{
   width:80%;
   height:90%;
 }
+.flexTd{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  border-right: 0;
+  height: 100%;
+}
+.flightalldetails{
+  font-size: small;
+  color:blue;
+}
+.flightalldetails:hover{
+  cursor:pointer;
+  text-decoration: underline;
+}
+.show{
+  display:block
+}
+/* .hidden{
+  display:none
+} */

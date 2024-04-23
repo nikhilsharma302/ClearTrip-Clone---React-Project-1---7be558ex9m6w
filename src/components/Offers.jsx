@@ -26,7 +26,7 @@ export default function Offers() {
                 setofferarr(response1.data.offers);
                 const response2=await resp2.json()
                 setSectionData(response2.data.offers)
-
+                
             }
         }catch(err){
             console.log(err)
