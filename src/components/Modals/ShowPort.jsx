@@ -10,7 +10,7 @@ export default function ShowPort({airportList,type,searchPort,setDestination,set
         ref1.current.style.left=positionLeft
         ref1.current.style.top=positionTop
         ref1.current.style.width=width;
-
+        console.log(blur)
     },[])
     const [showUl,setShowUl]=useState(true)
     function setVal({item},type){
@@ -27,7 +27,7 @@ export default function ShowPort({airportList,type,searchPort,setDestination,set
   return ReactDOM.createPortal (
     showUl&&
     <div className="ports">
-        blur&&<div className="hidebackground"></div> 
+        {blur&&<div className="hidebackground"></div> }
         <ul ref={ref1} className="portlist" >
         {
             airportList.map(item=>(
