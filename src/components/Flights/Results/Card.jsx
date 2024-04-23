@@ -137,17 +137,17 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         let prObj;
         if(arrivSort==="increase"){
             prObj={
-                "timings":-1 
+                "arrivalTimings":-1 
             }
         }
         else if(arrivSort==="decrease"){
             prObj={
-                "timings":1   
+                "arrivalTimings":1   
             }
         }
         else{
             prObj={
-                "timings":0  
+                "arrivalTimings":0  
             }
         }
         const val=arrivSort==="a"?"increase":(arrivSort==="increase"?"decrease":"increase")
@@ -179,19 +179,21 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
   return (
         flightarr.length>0&&<div className="flightmain">
             <div className="flightFilter">
-                <div className="stops">  
+                
+                <div className="stops">   
                     <div className="cardflex">
                         <p>Stops</p>
                         <div onClick={toggleStop}>
                             {
                             stopar?<KeyboardArrowUpIcon/>:
                             <KeyboardArrowDownIcon/>
-                            }</div>
+                            }
+                        </div>
                     </div>  
                     <div className={stopClass}>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="Non-stop">Non-stop</label><br/>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="1stop">1 stop</label><br/>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="2stop">2 stop</label><br/>
+                        <div><input type="checkbox" name="group1[]" /><label htmlFor="Non-stop">Non-stop</label></div>
+                        <div><input type="checkbox" name="group1[]" /><label htmlFor="1stop">1 stop</label></div>
+                        <div><input type="checkbox" name="group1[]" /><label htmlFor="2stop">2 stop</label></div>
                     </div>  
                 </div>
                 <div className="departure">
@@ -241,15 +243,15 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                     <div  className="cardflex">
                         <p>One-way price</p>
                         <div onClick={togglePr}>{pr?<KeyboardArrowUpIcon/>:
-                        <KeyboardArrowDownIcon/>}</div>
+                            <KeyboardArrowDownIcon/>}
+                        </div>
                     </div>
                     <div className={prClass}>
                         <p className="cardflex1">Up to 60000</p>
                         <input style={{width:"100%"}} type="range" value={rangeval} min="20000" max="60000" default="40000" onChange={(e)=>setRangeVal(e.target.value)}/>
                         <div className="cardflex1">
-                        <p>₹ 20000</p><p>₹ 60000</p>
-                        </div>
-                             
+                            <p>₹ 20000</p><p>₹ 60000</p>
+                        </div>       
                     </div>
                 </div>
                 <div className="airline">
@@ -262,13 +264,14 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                         <input type="checkbox" name="group3[]" /><label htmlFor="itenarary">Show multi-airline itineraries</label><br/>
                     </div>
                 </div>
+                
             </div>
-            <table className="flightdetailstable" cellspacing="0">
+            <table className="flightdetailstable" >
                 <thead>
                     <tr className="flightDataHeadRow" >
                         
-                        <th>Airlines</th>
-                        <th onClick={depart}>
+                        <th className="left">Airlines</th>
+                        <th className="middle" onClick={depart}>
                             Departure
                             { 
                                 departSort==="a"?"":(departSort==="increase"? <NorthIcon sx={{fontSize:"small"}}/>
@@ -276,7 +279,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                             }
                             
                         </th>
-                        <th onClick={durat}>
+                        <th className="middle" onClick={durat}>
                             Duration
                             {
                                duratSort==="a"?"":(duratSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
@@ -284,7 +287,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                                 :<SouthIcon sx={{fontSize:"small"}}/>)
                             }
                         </th>
-                        <th  onClick={arriv}>
+                        <th className="middle"  onClick={arriv}>
                             Arrival
                             {
                                 arrivSort==="a"?"":(arrivSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
@@ -292,7 +295,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                                 :<SouthIcon sx={{fontSize:"small"}}/>)
                             }
                         </th>
-                        <th onClick={pricer} >
+                        <th className="middle" onClick={pricer} >
                             Price
                             {
                                priceSort==="a"?"":( priceSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
@@ -300,7 +303,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                                 :<SouthIcon sx={{fontSize:"small"}}/>)
                             }
                         </th>
-                        <th>
+                        <th className="right">
                             Smart sort
                             <NorthIcon sx={{fontSize:"small"}}/>
 
@@ -313,12 +316,12 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                     {
                         flightarr.map(airline=>(
                             <tr key={airline._id} className="flightDataBodyRow">
-                                <td >{airline.airline}</td>
-                                <td>{airline.departureTime}</td>
-                                <td >{airline.duration}h<div style={{textAlign:"center",margin:"auto",width:"80%",height:"1px", backgroundColor:"gray"}}></div>{airline. stops} stops</td>
-                                <td>{airline.arrivalTime}</td>
-                                <td>{airline.ticketPrice}</td>
-                                <td ><button className="bookBtn">Book</button></td>
+                                <td className="left">{airline.airline}</td>
+                                <td className="middle">{airline.departureTime}</td>
+                                <td className="middle">{airline.duration}h<div style={{textAlign:"center",margin:"auto",width:"80%",height:"1px", backgroundColor:"gray"}}></div>{airline.stops===0?"non stop":(airline.stops===1?"1 stop": `${airline.stops} stops`)} </td>
+                                <td className="middle">{airline.arrivalTime}</td>
+                                <td className="middle">{airline.ticketPrice}</td>
+                                <td className="right"><button className="bookBtn">Book</button></td>
                             </tr>
                         ))
                     }

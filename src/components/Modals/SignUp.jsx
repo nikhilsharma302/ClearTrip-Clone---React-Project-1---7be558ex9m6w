@@ -3,20 +3,29 @@ import ReactDOM from 'react-dom'
 import '../../styles/App.css'
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import Carous from '../assets/Carous';
 export default function SignUp({setShowportal}) {
-  const [z,setZ]=useState("block")
+  const [show,setShow]=useState("block")
   useEffect(()=>{
-    setZ("block")
-    return ()=>setZ("none")
+    {
+    setShow("block")
+    document.body.overflow="hidden";
+    }
+    return ()=>
+    {
+      setShow("none")
+      document.body.overflow="unset"
+    }
   },[])
   function hideModal(e){
     //console.log("btn pressed")
-    setZ("none")
+    setShow("none")
     setShowportal(false)
   }
-  return ReactDOM.createPortal(
-    <div className="portal" style={{display:z}}>
-      <div className="hidebackground">
+  return ReactDOM.createPortal(<>
+    <div className="portal-background"></div>
+    <div className="portal" style={{display:show}}>
+      {/* <div className="hidebackground"> */}
         <div className="signupcard">
           <div className="signupcarous"></div>
           <div className="signupotp">
@@ -42,9 +51,10 @@ export default function SignUp({setShowportal}) {
               </h6>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </div>
-    </div>, document.getElementById('portal')
+    </div>
+    </>, document.getElementById('portal')
   )
 }
 
