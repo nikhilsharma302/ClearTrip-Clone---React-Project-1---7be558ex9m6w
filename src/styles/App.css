@@ -682,7 +682,7 @@ flightDataBodyRow{
 .flightDataBodyRow td{
   display:flex;
   justify-content: space-around;
-  height:20vh;
+  min-height:fit-content;
   margin:2% 0;
   border-radius: 5px;
   border:2px solid lightgray;

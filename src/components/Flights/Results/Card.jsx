@@ -52,22 +52,22 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     const [duratSort,setDuratSort]=useState("a")
     const[arrivSort,setArrivSort]=useState("a")
     const[priceSort, setPriceSort]=useState("a");
-    const[minPrice,setMinPrice]=useState("");
-    const[maxPrice,setMaxPrice]=useState("")
+    const[minPrice,setMinPrice]=useState();
+    const[maxPrice,setMaxPrice]=useState()
     const [datachange,setdatachange]=useState(true)
-    function findMinAndMax(flightarr){
-        
-        // let max=Number.MIN_VALUE;
-        const newobj=flightarr.map(single=>(
-            Number(single.ticketPrice))
-        )
+    const [indidata,setIndiData]=useState([]);
+    async function findMinAndMax(flightarr){
+        if(flightarr&&flightarr.length>0){
+            const newobj= await flightarr.map(single=>(
+                    Number(single.ticketPrice))
+                )
         newobj.sort()
-        console.log(newobj)
         setMaxPrice(newobj[newobj.length-1])
-        setMinPrice(newobj[0])   
+        setMinPrice(newobj[0]) 
+        }  
     }
     useEffect(()=>{
-        findMinAndMax(flightarr)
+        findMinAndMax(flightarr&&flightarr.length>0?flightarr:[])
     },[])
     async function sortFlights(paramObj){
         setFlightArr([])
@@ -98,28 +98,33 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     useEffect(()=>{
         sortFlights(paramObj)
     },[paramObj])
-    // const flightId=flightarr.map(item=>(item._id))
-    // let arr=[]
-    // async function callingdetails(i){
-    //     try{
-    //         const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${flightId[i]}`,{headers:{
-    //             projectId:"f104bi07c490"
-    //         }})
-    //         if(!resp.ok){
-    //             throw new Error("Unable to fetch flight details at index",i)
-    //         }
-    //         else{
-    //             const response=await resp.json();
-    //              arr=[...arr,response.data]
-    //         }
-    //     }catch(err){
-    //         console.log(err)
-    //     }
-    // }
-    // useEffect(()=>{
-    //     for(let i=0;i<flightId.length;i++)
-    //         callingdetails(i)
-    // },[flightarr])
+    async function callingdetails(iid){
+        console.log("indidata is ",indidata)
+        try{
+            const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${iid}`,{headers:{
+                projectId:"f104bi07c490"
+            }})
+            if(!resp.ok){
+                throw new Error("Unable to fetch flight details of flight with id= ",iid)
+            }
+            else{
+                let newdata
+                const response=await resp.json();
+                newdata=response.data;
+                const indx = indidata.findIndex(item => item._id === newdata._id);
+                console.log(indx);
+                if(indx===-1){
+                    setIndiData([...indidata,newdata])
+                }
+                else{
+                    indidata[indx]=newdata;
+                    setIndiData(indidata)
+                }
+            }
+        }catch(err){
+            console.log(err)
+        }
+    }
     async function flightFilter(filterObj){
         const filterParams=JSON.stringify(filterObj)
         if(srci&&srci.length>0&&desti&&desti.length>0)
@@ -136,13 +141,11 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 }
                 else{
                     const response=await resp.json();
-                    setFlightArr(response.data.flights);
-                    findMinAndMax(response.data.flights)
+                    setFlightArr(response.data.flights);  
                 }
         }catch(err){
             console.log(err)
-        }
-        
+        }  
     }
     function toggleStop(){  
         setStopar(!stopar) 
@@ -152,14 +155,12 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     function toggleTim(){ 
         setTim(!tim)
         const stoping=departClass==="departurefilter"?"hidden":"departurefilter"
-        setDepartClass(stoping)
-        
+        setDepartClass(stoping)    
     }
     function togglePr(){ 
         setPr(!pr)
         const stoping=prClass==="pricerange"?"hidden":"pricerange"
-        setPrClass(stoping)
-        
+        setPrClass(stoping)    
     }
     function toggleAr(){ 
         setAr(!ar)
@@ -261,29 +262,43 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
             id=e.target.id
         }
         flightarr.map(airflight=>{
+            let iid;
             if(airflight.flightID===id && e.target.nodeName==="SPAN"){
                     e.target.childNodes[0].classList.toggle("show")
                     e.target.childNodes[0].classList.toggle("hidden")
                     e.target.childNodes[1].classList.toggle("show")
-                    e.target.childNodes[1].classList.toggle("hidden")
-                
+                    e.target.childNodes[1].classList.toggle("hidden") 
+                    e.target.childNodes[2].classList.toggle("show")
+                    e.target.childNodes[2].classList.toggle("hidden")         
             }
             else if(airflight.flightID===id && e.target.nodeName==="P"){
                 e.target.parentNode.childNodes[0].classList.toggle("show")
                 e.target.parentNode.childNodes[0].classList.toggle("hidden")
+                callingdetails(airflight._id)
                 e.target.parentNode.childNodes[1].classList.toggle("show")
                 e.target.parentNode.childNodes[1].classList.toggle("hidden")
+                e.target.parentNode.childNodes[2].classList.toggle("show")
+                e.target.parentNode.childNodes[2].classList.toggle("hidden")
+                iid=airflight._id
             }
+            
+
         })
     }
     function setfilterObj(e,{type}){
-        //console.log(e)
-        filterObj={...filterObj,[type]:e.target.value}  
-        flightFilter(filterObj)
-        //console.log(filterObj)
+        if([type]=="ticketPrice"){
+            setRangeVal(e.target.value)
+            filterObj={...filterObj,[type]:{"$lte":maxPrice,"$gte":e.target.value}}
+            
+        }
+        else{
+            filterObj={...filterObj,[type]:e.target.value}
+        }
+          
+        flightFilter(filterObj) 
     }
     return (
-        flightarr.length>0&&<div className="flightmain">
+        flightarr && flightarr.length>0 && <div className="flightmain">
             <div className="flightFilter">
                 <div className="stops">  
                     <div className="cardflex">
@@ -351,7 +366,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                     </div>
                     <div className={prClass}>
                         <p className="cardflex1">{maxPrice&&`Up to ₹ ${maxPrice}`}  </p>
-                        <input style={{width:"100%"}} type="range" value={rangeval} min={minPrice} max={maxPrice} default={(minPrice+maxPrice)/2} onChange={(e)=>setRangeVal(e.target.value)}/>
+                        <input style={{width:"100%"}} type="range" value={rangeval} min={minPrice} max={maxPrice} default={(minPrice+maxPrice)/2} onChange={(e)=>setfilterObj(e,{type:"ticketPrice"})}/>
                         <div className="cardflex1">
                         <p>{minPrice>0&&`₹ ${minPrice}`}</p><p>{maxPrice>0&&`₹ ${maxPrice}`}</p>
                         </div>
@@ -436,7 +451,25 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                                         <p className="hidden">
                                             Hide Flight Details
                                         </p>
+                                        
+                                                
+
+                                        <div className="hidden" id={airline.flightID}>
+                                            {
+                                            indidata.map(singleflight=>(
+                                                singleflight._id===airline._id?<div>
+                                                                                            <img className="flightImg" src={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].img:flightObj["def"].img}
+                                        alt={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline}/>
+                                        <p>{flightObj[singleflight.flightID.slice(0,2)]!==undefined?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline}</p>
+                                                </div>:null
+                                            ))
+                                                
+                                            }
+                                           
+                                        </div>
+                                           
                                     </span>
+                                    
 
                                 </div>
                                 <div>{airline.departureTime}</div>
