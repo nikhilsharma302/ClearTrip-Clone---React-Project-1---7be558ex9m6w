@@ -36,8 +36,8 @@ const flightObj={
         img:kingfisher
     }
 }
+let filterObj={}
 export default function Card({flightarr,setFlightArr,srci,desti,day}) {
-    
     const [paramObj,setParamObj]=useState({})
     const [stopar,setStopar]=useState(false)
     const [tim,setTim]=useState(false)
@@ -52,7 +52,23 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     const [duratSort,setDuratSort]=useState("a")
     const[arrivSort,setArrivSort]=useState("a")
     const[priceSort, setPriceSort]=useState("a");
-    //const [showfightdetails, setShowFlightDetails]=useState(false)
+    const[minPrice,setMinPrice]=useState("");
+    const[maxPrice,setMaxPrice]=useState("")
+    const [datachange,setdatachange]=useState(true)
+    function findMinAndMax(flightarr){
+        
+        // let max=Number.MIN_VALUE;
+        const newobj=flightarr.map(single=>(
+            Number(single.ticketPrice))
+        )
+        newobj.sort()
+        console.log(newobj)
+        setMaxPrice(newobj[newobj.length-1])
+        setMinPrice(newobj[0])   
+    }
+    useEffect(()=>{
+        findMinAndMax(flightarr)
+    },[])
     async function sortFlights(paramObj){
         setFlightArr([])
         const params=JSON.stringify(paramObj)
@@ -71,6 +87,8 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 else{
                     const response=await resp.json();
                     setFlightArr(response.data.flights);
+                    setdatachange(!datachange)
+                    findMinAndMax(response.data.flights)
                 }
             }catch(err){
                 console.log(err)
@@ -80,28 +98,52 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     useEffect(()=>{
         sortFlights(paramObj)
     },[paramObj])
-    const flightId=flightarr.map(item=>(item._id))
-    let arr=[]
-    async function callingdetails(i){
+    // const flightId=flightarr.map(item=>(item._id))
+    // let arr=[]
+    // async function callingdetails(i){
+    //     try{
+    //         const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${flightId[i]}`,{headers:{
+    //             projectId:"f104bi07c490"
+    //         }})
+    //         if(!resp.ok){
+    //             throw new Error("Unable to fetch flight details at index",i)
+    //         }
+    //         else{
+    //             const response=await resp.json();
+    //              arr=[...arr,response.data]
+    //         }
+    //     }catch(err){
+    //         console.log(err)
+    //     }
+    // }
+    // useEffect(()=>{
+    //     for(let i=0;i<flightId.length;i++)
+    //         callingdetails(i)
+    // },[flightarr])
+    async function flightFilter(filterObj){
+        const filterParams=JSON.stringify(filterObj)
+        if(srci&&srci.length>0&&desti&&desti.length>0)
         try{
-            const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${flightId[i]}`,{headers:{
-                projectId:"f104bi07c490"
-            }})
-            if(!resp.ok){
-                throw new Error("Unable to fetch flight details at index",i)
-            }
-            else{
-                const response=await resp.json();
-                 arr=[...arr,response.data]
-            }
+            const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}&filter=${filterParams}`
+                ,{
+                headers:{
+                    projectID:`${PROJECT_ID}`,
+                  }
+                })
+                
+                if(!resp.ok){
+                    throw new Error("Unable to search for flight, please recheck the request")
+                }
+                else{
+                    const response=await resp.json();
+                    setFlightArr(response.data.flights);
+                    findMinAndMax(response.data.flights)
+                }
         }catch(err){
             console.log(err)
         }
+        
     }
-    useEffect(()=>{
-        for(let i=0;i<flightId.length;i++)
-            callingdetails(i)
-    },[flightarr])
     function toggleStop(){  
         setStopar(!stopar) 
         const val=stopClass==="stopsfilter"?"hidden":"stopsfilter"
@@ -218,7 +260,6 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         else{
             id=e.target.id
         }
-        //console.log(flightarr);
         flightarr.map(airflight=>{
             if(airflight.flightID===id && e.target.nodeName==="SPAN"){
                     e.target.childNodes[0].classList.toggle("show")
@@ -233,11 +274,15 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 e.target.parentNode.childNodes[1].classList.toggle("show")
                 e.target.parentNode.childNodes[1].classList.toggle("hidden")
             }
-        }
-            
-        )
+        })
     }
-  return (
+    function setfilterObj(e,{type}){
+        //console.log(e)
+        filterObj={...filterObj,[type]:e.target.value}  
+        flightFilter(filterObj)
+        //console.log(filterObj)
+    }
+    return (
         flightarr.length>0&&<div className="flightmain">
             <div className="flightFilter">
                 <div className="stops">  
@@ -250,9 +295,9 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                             }</div>
                     </div>  
                     <div className={stopClass}>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="Non-stop">Non-stop</label><br/>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="1stop">1 stop</label><br/>
-                        <input type="checkbox" name="group1[]" /><label htmlFor="2stop">2 stop</label><br/>
+                        <input type="checkbox" name="group1" value="0"  onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="Non-stop" >Non-stop</label><br/>
+                        <input type="checkbox" name="group1" value="1" onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="1stop">1 stop</label><br/>
+                        <input type="checkbox" name="group1" value="2"  onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="2stop">2 stop</label><br/>
                     </div>  
                 </div>
                 <div className="departure">
@@ -268,7 +313,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                     <div className={departClass}>
                         <div className="cardflex1 ">
                             <div>
-                                <input type="checkbox"  name="group2[]" /><label htmlFor="Early morning">Early morning</label>
+                                <input type="checkbox"  value="midnight-8 am" name="group2[]" onChange={(e)=>setfilterObj(e,{type:"departureTime"})} /><label htmlFor="Early morning">Early morning</label>
                             </div>
                             <p >Midnight - 8 am</p>
                         </div>
@@ -305,10 +350,10 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                         <KeyboardArrowDownIcon/>}</div>
                     </div>
                     <div className={prClass}>
-                        <p className="cardflex1">Up to 60000</p>
-                        <input style={{width:"100%"}} type="range" value={rangeval} min="20000" max="60000" default="40000" onChange={(e)=>setRangeVal(e.target.value)}/>
+                        <p className="cardflex1">{maxPrice&&`Up to ₹ ${maxPrice}`}  </p>
+                        <input style={{width:"100%"}} type="range" value={rangeval} min={minPrice} max={maxPrice} default={(minPrice+maxPrice)/2} onChange={(e)=>setRangeVal(e.target.value)}/>
                         <div className="cardflex1">
-                        <p>₹ 20000</p><p>₹ 60000</p>
+                        <p>{minPrice>0&&`₹ ${minPrice}`}</p><p>{maxPrice>0&&`₹ ${maxPrice}`}</p>
                         </div>
                              
                     </div>

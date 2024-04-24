@@ -114,7 +114,7 @@ export default function Flights() {
             projectID:`${PROJECT_ID}`,
           }
         })
-        console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
+        //console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
         if(!resp.ok){
           throw new Error("Unable to search for flight, please recheck the request")
         }

@@ -19,7 +19,7 @@ export default function Result() {
   const[airports,setairports]=useState([])
   const [srcair, setsrcair]=useState(false)
   const [destair,setdestair]=useState(false)
-  const [flightarr,setFlightArr]=useState([]);  
+  const [flightarr,setFlightArr]=useState(location?.state?.searchedFlights);  
   const [sel,setSel]=useState("1 Traveller")
   const[label,setLabel]=useState(location?.state?.fulldate)
   const[day,setDay]=useState("")
@@ -105,7 +105,7 @@ export default function Result() {
           // console.log(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}`)
           const response=await resp.json();
           setFlightArr(response.data.flights);
-          console.log(response.data.flights)
+          //console.log(response.data.flights)
         }
       }catch(err){
         console.log(err)
