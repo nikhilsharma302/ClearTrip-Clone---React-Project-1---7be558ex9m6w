@@ -32,6 +32,7 @@ export default function Flights() {
   const [source, setSource]=useState("")
   const [showsrc,setshowsrc]=useState(false)
   const [showdest,setshowdest]=useState(false)
+  const [dateString,setDateString]=useState("")
   function setConstantValue(e,{type, action}){
     if(type==="adults"){
       if(action==='increase'){
@@ -97,10 +98,11 @@ export default function Flights() {
     setSeatClass(e.target.innerText)
   }
   function setCalenderDate(e){
-
+    let dat= new Date(e).toDateString()
+    
     const date = e?.$d
-    //console.log("typeof date ",typeof date)
     setfullDate(date.toLocaleDateString())
+    setDateString(dat)
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const reqday= daysOfWeek[date.getDay()];
     setDay(reqday)
@@ -114,7 +116,6 @@ export default function Flights() {
             projectID:`${PROJECT_ID}`,
           }
         })
-        //console.log(`${FLIGHT_SEARCH_API}{"source":"${source.slice(0,3)}","destination":"${destination.slice(0,3)}"}&day=${day}`)
         if(!resp.ok){
           throw new Error("Unable to search for flight, please recheck the request")
         }
@@ -122,7 +123,8 @@ export default function Flights() {
           const response=await resp.json();
           
           navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`$ {children}`,
-          "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination,"fulldate":fulldate}})
+          "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination,"fulldate":fulldate,"dateString":dateString}})
+          
         }
       }catch(err){
         console.log(err)
@@ -142,7 +144,6 @@ export default function Flights() {
       else{
         const response=await resp.json();
         setAirportList(response.data.airports)
-        //console.log(response.data.airports)
         if(id=="src" && response.data.airports.length>0){
           setshowsrc(true);
           setshowdest(false);
@@ -224,7 +225,7 @@ export default function Flights() {
             </div>
             {showsrc&&<div className="showlist">
               <ShowPort airportList={airportList} type="source" searchPort={searchPort}
-               setDestination={setDestination} blur={false} setSource={setSource} positionLeft={"17%"} positionTop={"69%"} width={"24%"}/>
+               setDestination={setDestination} blur={false} setSource={setSource} positionLeft={"17%"} positionTop={"67%"} width={"23%"}/>
             </div>}
           </div>
           <div className="toandfromicon" onClick={changetofromvals}><SyncAltIcon/></div>
@@ -235,7 +236,7 @@ export default function Flights() {
           </div>
             {showdest&&<div className="showlist">
             <ShowPort airportList={airportList} type="destination" searchPort={searchPort}
-               setDestination={setDestination} blurr={false} setSource={setSource} positionLeft={"45%"} positionTop={"69%"} width={"24%"}/>
+               setDestination={setDestination} blurr={false} setSource={setSource} positionLeft={"44%"} positionTop={"67%"} width={"23%"}/>
             </div>
             }
           </div>

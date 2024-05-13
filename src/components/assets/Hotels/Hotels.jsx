@@ -1,17 +1,20 @@
 import React,{useState,useEffect,useContext} from 'react'
-import MyStore from './assets/Context'
+import MyStore from '../Context'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { Button } from '@mui/material'
 import {DatePicker} from '@mui/x-date-pickers'
 import TextField from '@mui/material/TextField'
-import Paper from '@mui/material/Paper';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import PersonIcon from '@mui/icons-material/Person';
-import '../styles/App.css'
+import './Hotels.css'
+import '../../../styles/App.css'
 import PlaceIcon from '@mui/icons-material/Place';
-import MoreOpt from './assets/MoreOpt';
-import { PROJECT_ID } from './assets/Constants';
+import MoreOpt from '../MoreOpt';
+import { PROJECT_ID } from '../Constants';
+import GuestsAndRooms from '../../Modals/GuestsAndRooms';
+import {useNavigate} from 'react-router-dom'
 export default function Hotels(){
+  const navigate=useNavigate()
   const [showIcon,setShowIcon]=useState(false)
   const [showdivval, setShowDivval]=useState(false)
   const date=new Date()
@@ -38,21 +41,24 @@ export default function Hotels(){
     setshowop(!showop)
   }
   async function searchCity(e){
+    setselectcity(e.target.value.toUpperCase())
     try{
-      const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/city`,{
+      const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/hotel?search={"location":"${selectcity.toUpperCase()}"}`,
+      
+      {
         headers:{
           projectID:PROJECT_ID
         }
-      }
-      )  
+      })  
       if(!resp.ok){
         throw new Error("Unable to fetch city details")
       }
       else{
         const response=await resp.json();
-        console.log(response.data.cities)
         setshowhotels(true)
-        setcity(response.data.cities)
+        setcity(response.data.hotels)
+        navigate(`/hotels/city=${selectcity.toLowerCase()}`,
+        {state:{"resarray":response.data.hotels,"redirected":true,"city":selectcity.toUpperCase()}})
       }
     }catch(err){
       console.log(err)
@@ -65,26 +71,21 @@ export default function Hotels(){
         <h5>Enjoy hassle free bookings with ClearTrip</h5>
       </div>
       <div className="userinput">
-        <div  className="landmark" onClick={()=>setDivClicked(true)} style={{marginTop:"5%"}} >
-          {!divClicked&&<LocationOnOutlinedIcon/>}
-          {divClicked&&<PlaceIcon style={{color:"#da8210"}}/>}
-          <TextField fullWidth id="outlined-basic" 
-          placeholder="Enter locality, landmark, city or hotel"
-          variant="standard" style={{width:"90%", border:"none",height:"5vh",textAlign:"center",paddingTop:"1%",fontSize:"xx-large"}}
-          onChange={searchCity}
-          value={selectcity}
-          InputProps={{disableUnderline: true }}
-        />
-        <ul >{showhotels&&
-          city.map(singlecity=>(
-            <li  onClick={(e)=>{setselectcity(e.target.innerText);
-              console.log(e.target.innerText);
-              setshowhotels(false)}} key={singlecity._id}>{singlecity.cityState}</li>
-          ))  }
-        </ul>
-
-   
+        <div className="hotelsearch">
+          <div className="landmark" onClick={()=>setDivClicked(true)} 
+            style={{marginTop:"5%"}} >
+            {!divClicked&&<LocationOnOutlinedIcon/>}
+            {divClicked&&<PlaceIcon style={{color:"#da8210"}}/>}
+            <TextField fullWidth id="outlined-basic" 
+              placeholder="Enter locality, landmark, city or hotel"
+              variant="standard" 
+            onChange={(e)=>setselectcity(e.target.value)}
+            value={selectcity.toUpperCase()}
+            InputProps={{disableUnderline: true }}
+            />
+          </div>
         </div>
+        
         <div className="calender" style={{width:"80%"}}>
           <div className="dates">
             <DatePicker
@@ -96,29 +97,33 @@ export default function Hotels(){
               sx={{width:"40%"} }
             />
           </div>
-          <div id="usercheckinoutshow" ><div onClick={showdiv}>
+          <div id="usercheckinoutshow" >
+            <div onClick={showdiv} className="hoteliconshow">
             {!showIcon&&<PersonOutlineOutlinedIcon />}
             {showIcon&&<PersonIcon/>}
             <div>{persons}</div>
             </div>
-           {showdivval&& <div className="divhover">
-              <Paper elevation={3}>
-              <div onClick={(e)=>{setpersonandromm(e)}}>
-                  {!showop
-                  &&<div classname="personOptsDiv">
-                  <div  className="personOpts">1 Room, 1 Adult</div>
-                  <div  className="personOpts">1 Room, 2 Adults</div>
-                  <div  className="personOpts">2 Rooms, 4 Adults</div>
-                  <div  className="personOpts">2 Rooms, 3 Adults</div>
-                  </div>}
-                  {showop&&<MoreOpt setpersonandromm={setpersonandromm}/>}
+            {
+              showdivval &&<div className="divhover">
+                <div onClick={(e)=>{setpersonandromm(e)}}>
+                  {
+                    !showop && <GuestsAndRooms/>
+                  }
+                  {
+                    showop  &&  <MoreOpt setpersonandromm={setpersonandromm}/>
+                  }
                 </div>
-                {!showop&&<div className="moreopt" onClick={dispmore}>Add more rooms and travellers</div>}
-              </Paper>
-            </div> }
+                  {
+                    !showop &&  <div className="moreopt" onClick={dispmore}>
+                      Add more rooms and travellers
+                    </div>
+                  }
+              
+              </div>
+            }
           </div>
         </div>
-        <Button variant="contained" style={{ backgroundColor:"#da8210"}} >Search Hotels</Button> 
+        <Button variant="contained" style={{ backgroundColor:"#da8210"}} onClick={searchCity} >Search Hotels</Button> 
       </div>
     </div>
   )

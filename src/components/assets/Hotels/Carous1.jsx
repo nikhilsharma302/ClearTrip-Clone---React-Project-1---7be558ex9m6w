@@ -8,14 +8,15 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { useState, useEffect } from 'react';
+import { TempleBuddhist } from '@mui/icons-material';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-function Carous({offerarr}) {
-  console.log(offerarr)
+function Carous1({images}) {
+  //console.log(images)
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
-  const maxSteps = offerarr.length;
+  const maxSteps = images.length;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,24 +40,14 @@ function Carous({offerarr}) {
   };
 
   return (
-    <Box sx={{ maxWidth: 
-    300, flexGrow: 1,marginLeft:10 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-      </Paper>
+    <div>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {offerarr.map((step, index) => (
+        {images.map((step, index) => (
           <div key={index}>
             <Box
               sx={{
@@ -71,13 +62,14 @@ function Carous({offerarr}) {
               }}
             >
               <img
-                src={step.heroUrl}
-                alt={step.id}
+                src={step}
+                alt="image downloading..."
                 style={{
                   width: '100%',
                   height: '20vh',
                   position:"absolute",
-                  top:0
+                  top:0,
+                  borderRadius:"10px"
                 }}
               />
               <div
@@ -94,7 +86,7 @@ function Carous({offerarr}) {
                   height:"fit-content"
                 }}
               >
-                <div>{step.pTl}</div><div>{step.pTx}</div>
+                
               </div>
             </Box>
           </div>
@@ -126,8 +118,8 @@ function Carous({offerarr}) {
           </Button>
         }
       />
-    </Box>
+    </div>
   );
 }
 
-export default Carous;
+export default Carous1;

@@ -10,6 +10,8 @@ import spicejet from'../../assets/icons/spicejet.png'
 import goair from '../../assets/icons/goair.png'
 import indigo from '../../assets/icons/indigo.png'
 import kingfisher from '../../assets/icons/kingfisher.png'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 const flightObj={
     "UK":{
         airline:"Vistara",
@@ -37,7 +39,8 @@ const flightObj={
     }
 }
 let filterObj={}
-export default function Card({flightarr,setFlightArr,srci,desti,day}) {
+export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}) {
+    
     const [paramObj,setParamObj]=useState({})
     const [stopar,setStopar]=useState(false)
     const [tim,setTim]=useState(false)
@@ -56,6 +59,8 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
     const[maxPrice,setMaxPrice]=useState()
     const [datachange,setdatachange]=useState(true)
     const [indidata,setIndiData]=useState([]);
+    const[Dates,setDates]=useState([]);
+    //const [dateeObject,setDateeObject]=useState(dateObject)
     async function findMinAndMax(flightarr){
         if(flightarr&&flightarr.length>0){
             const newobj= await flightarr.map(single=>(
@@ -67,6 +72,8 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         }  
     }
     useEffect(()=>{
+        const dates=dateeString.split(" ");
+        setDates(dates);
         findMinAndMax(flightarr&&flightarr.length>0?flightarr:[])
     },[])
     async function sortFlights(paramObj){
@@ -99,7 +106,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         sortFlights(paramObj)
     },[paramObj])
     async function callingdetails(iid){
-        console.log("indidata is ",indidata)
+       
         try{
             const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${iid}`,{headers:{
                 projectId:"f104bi07c490"
@@ -112,7 +119,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 const response=await resp.json();
                 newdata=response.data;
                 const indx = indidata.findIndex(item => item._id === newdata._id);
-                console.log(indx);
+                
                 if(indx===-1){
                     setIndiData([...indidata,newdata])
                 }
@@ -263,13 +270,13 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
         }
         flightarr.map(airflight=>{
             let iid;
-            if(airflight.flightID===id && e.target.nodeName==="SPAN"){
+            if(airflight.flightID===id && e.target.nodeName==="DIV"){
                     e.target.childNodes[0].classList.toggle("show")
                     e.target.childNodes[0].classList.toggle("hidden")
                     e.target.childNodes[1].classList.toggle("show")
                     e.target.childNodes[1].classList.toggle("hidden") 
-                    e.target.childNodes[2].classList.toggle("show")
-                    e.target.childNodes[2].classList.toggle("hidden")         
+                    e.target.parentNode.childNodes[2].classList.toggle("show")
+                    e.target.parentNode.childNodes[2].classList.toggle("hidden")         
             }
             else if(airflight.flightID===id && e.target.nodeName==="P"){
                 e.target.parentNode.childNodes[0].classList.toggle("show")
@@ -277,8 +284,8 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                 callingdetails(airflight._id)
                 e.target.parentNode.childNodes[1].classList.toggle("show")
                 e.target.parentNode.childNodes[1].classList.toggle("hidden")
-                e.target.parentNode.childNodes[2].classList.toggle("show")
-                e.target.parentNode.childNodes[2].classList.toggle("hidden")
+                e.target.parentNode.parentNode.childNodes[2].classList.toggle("show")
+                e.target.parentNode.parentNode.childNodes[2].classList.toggle("hidden")
                 iid=airflight._id
             }
             
@@ -414,7 +421,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                                 }
                             </span>
                             <span onClick={pricer} >
-                                Price
+                            Price
                                 {
                                 priceSort==="a"?"":( priceSort==="increase"?<NorthIcon sx={{fontSize:"small"}}/>
 
@@ -436,49 +443,90 @@ export default function Card({flightarr,setFlightArr,srci,desti,day}) {
                         <tr key={airline._id} className="flightDataBodyRow">
                             <td>
                                 <div className="flexTd" >
-                                    <div className="flightCard">
+                                    <span className="flightCard">
                                         <img className="flightImg" src={flightObj[airline.flightID.slice(0,2)]?flightObj[airline.flightID.slice(0,2)].img:flightObj["def"].img}
                                         alt={flightObj[airline.flightID.slice(0,2)]?flightObj[airline.flightID.slice(0,2)].airline:flightObj["def"].airline}/>
                                         <p>{flightObj[airline.flightID.slice(0,2)]!==undefined?flightObj[airline.flightID.slice(0,2)].airline:flightObj["def"].airline}</p> 
-                                    </div>
-                                    <span onClick={(e)=>showFlightDet(e)} 
+                                    </span>                      
+                                    <span>{airline.departureTime}</span>
+                                    <span >{airline.duration}h<br/>
+                                        <hr style={{textAlign:"center",margin:"auto",width:"80%",height:"1px", backgroundColor:"gray"}}/>
+                                        
+                                            {airline. stops} stops
+                                    </span>
+                                    <span className="arrv">{airline.arrivalTime}</span>
+                                    
+                                    <span>&#8377; {airline.ticketPrice}</span>
+                                     <span>
+                                        <button className="bookBtn">Book</button>
+                                    </span>
+                                </div>
+                                <div onClick={(e)=>showFlightDet(e)} 
                                         id={airline.flightID}  
-                                        className="flightalldetails"
-                                    >
+                                        className="flightalldetails">
                                         <p className="show">
-                                            Flight details ...
+                                            Flight Details...
                                         </p>
                                         <p className="hidden">
-                                            Hide Flight Details
+                                            Hide Details
                                         </p>
-                                        
-                                                
+                                </div> 
+                                <div className="hidden width-100" id={airline.flightID}>
+                                    {
+                                        indidata.map(singleflight=>(
+                                            singleflight._id===airline._id?
+                                            <div className="flightextradetails">
+                                                <div className="flightCardDirection">
+                                                    <div className="flex">
+                                                        <span>
+                                                            {singleflight.source} 
+                                                        </span>
+                                                        
+                                                        <span>
+                                                            <ArrowRightAltIcon/>
+                                                        </span>
+                                                        <span>
+                                                            {singleflight.destination}
+                                                        </span> 
+                                                    </div>
+                                                    <span>
+                                                        {`${Dates[0]}, ${Dates[2]} ${Dates[1]}`}
+                                                    </span> 
+                                                </div>
+                                                <div className="flightextradetailsflex">
+                                                    <div>
+                                                        <img className="flightImg" src={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].img:flightObj["def"].img}
+                                                        alt={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline}/>
+                                                        <div>
+                                                            {
+                                                            flightObj[singleflight.flightID.slice(0,2)]!==undefined?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline
+                                                            }
+                                                        </div>
+                                                        <div>{singleflight.flightID.split("-")[0]} {singleflight.departureTime}</div>
+                                                    </div>
+                                                    
+                                                    <div>{singleflight.source.toUpperCase()} {singleflight.arrivalTime}</div>
+                                                    <div className="clockincon"> 
+                                                        <AccessTimeIcon/>
+                                                        <span>{singleflight.duration}h</span>        
+                                                    </div>
+                                                    <div>{singleflight.destination.toUpperCase()} {singleflight.departureTime}</div>
+                                                    <div className="amneties">
+                                                        {
+                                                            singleflight.amenities.map((item)=>(
+                                                                <span key={item}>{item}</span>
+                                                            ))
+                                                        }
 
-                                        <div className="hidden" id={airline.flightID}>
-                                            {
-                                            indidata.map(singleflight=>(
-                                                singleflight._id===airline._id?<div>
-                                                                                            <img className="flightImg" src={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].img:flightObj["def"].img}
-                                        alt={flightObj[singleflight.flightID.slice(0,2)]?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline}/>
-                                        <p>{flightObj[singleflight.flightID.slice(0,2)]!==undefined?flightObj[singleflight.flightID.slice(0,2)].airline:flightObj["def"].airline}</p>
-                                                </div>:null
-                                            ))
-                                                
-                                            }
-                                           
-                                        </div>
-                                           
-                                    </span>
-                                    
-
-                                </div>
-                                <div>{airline.departureTime}</div>
-                                <div >{airline.duration}h<div style={{textAlign:"center",margin:"auto",width:"80%",height:"1px", backgroundColor:"gray"}}></div>{airline. stops} stops</div>
-                                <div>{airline.arrivalTime}</div>
-                                <div>&#8377; {airline.ticketPrice}</div>
-                                <div ><button className="bookBtn">Book</button></div>
-                                </td>
-                                <div className="hidden">hello</div>
+                                                    </div>
+                                                    
+                                                   
+                                                </div>
+                                            </div>:null
+                                        ))
+                                    }
+                                </div>  
+                            </td>       
                         </tr>
                     ))}
                 </tbody>

@@ -4,13 +4,13 @@ import '../../styles/App.css'
 
 export default function ShowPort({airportList,type,searchPort,setDestination,setSource,positionLeft,positionTop,width,blur}) {
     const ref1=useRef()
-    console.log(ref1.current)
+    
     useEffect(()=>{
         ref1.current.style.position="absolute";
         ref1.current.style.left=positionLeft
         ref1.current.style.top=positionTop
         ref1.current.style.width=width;
-        console.log(blur)
+       
     },[])
     const [showUl,setShowUl]=useState(true)
     function setVal({item},type){

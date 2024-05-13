@@ -22,7 +22,9 @@ export default function Result() {
   const [flightarr,setFlightArr]=useState(location?.state?.searchedFlights);  
   const [sel,setSel]=useState("1 Traveller")
   const[label,setLabel]=useState(location?.state?.fulldate)
-  const[day,setDay]=useState("")
+  const[day,setDay]=useState("");
+  const [dateeString,setDateeString]=useState(location?.state?.dateString)
+ 
   async function searchingPort(value,iptype){
     setsrcair(false);
     setdestair(false);
@@ -68,9 +70,8 @@ export default function Result() {
       let day = parseInt(splitarr[0], 10);
       let month = parseInt(splitarr[1], 10) - 1;
       let year = parseInt(splitarr[2], 10);
-      let dateObject = new Date(year, month, day);
-      //console.log("dateObject is",dateObject)
-      setCalenderDate({"$d":dateObject})
+      let date = new Date(year, month, day);
+      setCalenderDate({"$d":date})
     }
 
   },[]) 
@@ -80,16 +81,19 @@ export default function Result() {
     setDestination(dest)
   }
   function setCalenderDate(e){
+    
     const date = e?.$d
-    //console.log("typeof date in reults",typeof date)
+   
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const reqday= daysOfWeek[date.getDay()];
-    //console.log("reqday ",reqday)
+    
     setDay(reqday)
+    setDateeString(new Date(e.$d).toDateString())
+    
   }
   async function searchFlights(){
     setFlightArr([])
-    //console.log("day in flight page is",day)
+    
     if(srci&&srci.length>0&&desti&&desti.length>0){
       try{
         const resp=await fetch(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}`
@@ -102,10 +106,8 @@ export default function Result() {
           throw new Error("Unable to search for flight, please recheck the request")
         }
         else{
-          // console.log(`${FLIGHT_SEARCH_API}{"source":"${srci.slice(0,3)}","destination":"${desti.slice(0,3)}"}&day=${day}`)
           const response=await resp.json();
           setFlightArr(response.data.flights);
-          //console.log(response.data.flights)
         }
       }catch(err){
         console.log(err)
@@ -168,7 +170,7 @@ export default function Result() {
         <div className="flightResults">
           {/*<div className="flightEdit"></div>*/}
           <div className="flightShowContainer">
-            <Card flightarr={flightarr} setFlightArr={setFlightArr} srci={srci} desti={desti} day={day}/>
+            <Card flightarr={flightarr} setFlightArr={setFlightArr} srci={srci} desti={desti} day={day} dateeString={dateeString}/>
           </div>
         </div>
       </>

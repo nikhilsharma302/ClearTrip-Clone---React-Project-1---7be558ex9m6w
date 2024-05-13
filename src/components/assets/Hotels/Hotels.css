@@ -1,0 +1,201 @@
+.hoteliconshow{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+}
+.overlay{
+    width:100%;
+    opacity: 1;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.textfield{
+    width:90%;
+     border:none;
+     height:5vh;
+     text-align:center;
+     padding-top:1%;
+     font-size:xx-large
+}
+.hotelsearch{
+    width:90%;
+    position:relative;
+    margin :0 auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.landmark{
+    position: absolute;
+    top:10%
+}
+.list{
+    position: absolute;
+    top:10vh;
+    max-height: 40vh;
+    overflow-wrap: normal;
+    background-color: white;
+    z-index:999;
+    opacity:1;
+    padding:5%;
+    border-radius: 5%;
+    border:0.5px solid gray;
+    box-shadow: 1px 1px 1px gray;
+}
+.hotelCards{
+    display: flex;
+    flex-direction: column;
+    width:99vw;
+    min-height:100vh;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    
+}
+/* .navBar{
+    height:7vh;
+    width:99vw;
+} */
+.hotelCardsNavBaritems{
+    display:flex;
+    width:99vw;
+    height:7vh;
+    justify-content: center;
+    align-items: center;
+}
+.landmarkrow{
+    display: flex;
+    width:fit-content;
+    height: 9vh;
+    justify-content: space-between;
+    align-items: center;
+    border:1px solid lightgray;
+    border-radius: 5px;
+   
+}
+.hotelsdisplay{
+    min-height: fit-content;
+    width:99vw;
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 1vh 0 0 10vw;
+}
+.hotelsdisplay:hover{
+    cursor:pointer
+}
+.hotelcard{
+    margin:1vh 1vw 10vh 1vw;
+    width:20vw;
+    height:40vh;
+    border-radius: 10px;   
+}
+.hotelimage{
+    width:100%;
+    height:80%;
+    border-radius: 5%;
+}
+.hotelflex{
+    display: flex;
+    font-size: small;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+.hotelrating{
+    font-size: medium;
+    color:blue;
+    background-color:lightblue
+}
+.hotelocation{
+    color:gray;
+    font-size: small;
+}
+.hotechargesdiv{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.hotelchagesspan{
+    font-size: large;
+    font-weight: bold;
+}
+.hoteltaxspan{
+    font-size: medium;
+    color: gray;
+}
+.hotelSort{
+    width:50vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin:2vh 2vw;
+    height:7vh;
+}
+.hoteldetails{
+    width: 95%;
+    min-height: 100vh;
+}
+.hotelproperties{
+    list-style-type: none;
+    display: flex;
+    width: 45vw;
+    height: 7vh;
+    justify-content: space-between;
+    align-items: center;
+}
+.hotelproperties:hover{
+    cursor: pointer;
+}
+.hotecardmainsection{
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+.hotecardmainsection div{
+    width:45vw ;
+    height:100vh;
+    position:relative
+}
+.hotecardmainsection div img{
+    width:40vw;
+    height:50%;
+    border-radius:10px; 
+}
+.hotelimgcontainer button{
+    position: absolute;
+    top:45%;
+    right:10%;
+    width:fit-content;
+    background-color: white;
+    border: none;
+    font-weight: bold;
+    padding:1%;
+    border-radius: 10px;
+    box-shadow: none;
+}
+.cardimgs{
+    margin: 1vw auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height:100vh;
+    width:80vw;
+    justify-content: center;
+    align-items: center;
+}
+.imgcard{
+    margin:.5vw 5vw;
+    height:20vw;
+    width:20vw;
+    border-radius: 10px;
+}
