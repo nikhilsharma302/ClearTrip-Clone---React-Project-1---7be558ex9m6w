@@ -53,18 +53,40 @@ export default function IndividualHotelDetails() {
             />
         </div>
       <div className="hotecardmainsection">
-        <ul className="hotelproperties" >
-            <li onClick={displayselected}>General</li>
-            <li onClick={displayselected}>Amneties</li>
-            <li onClick={displayselected}>Rules</li>
-            <li onClick={displayselected}>About</li>
-            <li onClick={displayselected}>Location</li>
-            <li onClick={displayselected}>Reviews</li>
-            <li onClick={displayselected}>Rooms</li>
-        </ul>
+        <div className="hotelcardproperties">
+            <ul className="hotelproperties" >
+                <li onClick={displayselected}>General</li>
+                <li onClick={displayselected}>Amneties</li>
+                <li onClick={displayselected}>Rooms</li>
+            </ul>
+            <div className="General hidden">
+                <h1>
+                    {location?.state?.data?.name} 
+                </h1>
+                <p>{location?.state?.data?.location}</p>
+                <p>{location?.state?.data?.rating}/5</p>
+                 
+            </div>
+            <div className="Amneties hidden ">
+            <h1>Amneties</h1>
+                <div>
+                {
+                    location?.state?.data?.amenities.map(item=>(
+                        <span key={item}>{item}</span>
+                    ))
+                }
+                </div>  
+            </div>
+            <div className="Rooms hidden"></div>
+        </div>
+       
         <div className="hotelimgcontainer">
             <img src={location?.state?.data?.images[0]} alt="hotel image"/>
             <button onClick={showimgs}>Show all images</button>
+            <div>
+                <span>{`${location?.state?.data?.rooms[0]?.costDetails.baseCost} + ₹${location?.state?.data?.rooms[0]?.costDetails.taxesAndFees} tax / night`}</span>
+                <button>Select Room</button>
+            </div>
         </div>
       </div>
       

@@ -140,7 +140,7 @@ export default function HotelCards() {
                 <div>
                   <span className="hotelocation">{hotel.location}</span>
                 </div>
-                <div className="hotechargesdiv"><span className="hotelchagesspan">{parseInt(hotel.avgCostPerNight)}</span><span className="hoteltaxspan">+ Taxes extra per Night</span></div>
+                <div className="hotechargesdiv"><span className="hotelchagesspan">₹{parseInt(hotel.avgCostPerNight)}</span><span className="hoteltaxspan">+ Taxes extra per Night</span></div>
               </div>
             ))
           }

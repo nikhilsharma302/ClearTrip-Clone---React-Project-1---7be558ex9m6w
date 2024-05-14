@@ -145,10 +145,24 @@
     width: 95%;
     min-height: 100vh;
 }
+.hotelcardproperties{
+    display: flex;
+    flex-direction: column;
+    width:45vw;
+}
+.hotelcardproperties > div.show{
+    display: flex;
+    flex-direction: column;
+    width:45vw;
+}
+.hotelcardproperties > div.hidden{
+    display: none;
+}
+
 .hotelproperties{
     list-style-type: none;
     display: flex;
-    width: 45vw;
+    width: 100%;
     height: 7vh;
     justify-content: space-between;
     align-items: center;
