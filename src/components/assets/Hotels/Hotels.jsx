@@ -57,7 +57,7 @@ export default function Hotels(){
         const response=await resp.json();
         setshowhotels(true)
         setcity(response.data.hotels)
-        navigate(`/hotels/city=${selectcity.toLowerCase()}`,
+        navigate(`/hotels/${selectcity.toLowerCase()}`,
         {state:{"resarray":response.data.hotels,"redirected":true,"city":selectcity.toUpperCase()}})
       }
     }catch(err){

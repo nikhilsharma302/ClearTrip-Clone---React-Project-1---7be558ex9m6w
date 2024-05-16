@@ -10,6 +10,8 @@ import MyStore from "./assets/Context";
 import HotelCards from "./assets/Hotels/HotelCards";
 import IndividualHotelDetails from "./assets/Hotels/IndividualHotelDetails";
 import IndiCardImg from "./assets/Hotels/IndiCardImg";
+import Login from "./Login";
+import SignUp from "./Modals/SignUp";
 import {useState} from 'react'
 import Result from "./Flights/Results/Result";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -34,8 +36,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
           <Route path="/hotels/:city" element={<HotelCards/>}/>
           <Route path ="/hotels/details/:id" element={<IndividualHotelDetails/>}/>
           <Route path ="/hotels/details/:id/img/" element={<IndiCardImg/>}/>
-          <Route path="/offers" element={
-          <Offers/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/offers" element={<Offers/>}/>
+          <Route path="/register" element={<SignUp/>}/>
         </Routes>  
       </BrowserRouter>
     </div>

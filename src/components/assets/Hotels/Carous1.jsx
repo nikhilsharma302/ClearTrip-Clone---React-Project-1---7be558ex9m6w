@@ -66,7 +66,7 @@ function Carous1({images}) {
                 alt="image downloading..."
                 style={{
                   width: '100%',
-                  height: '20vh',
+                  height: '28vh',
                   position:"absolute",
                   top:0,
                   borderRadius:"10px"

@@ -475,22 +475,10 @@
   align-items: center;
   border-radius: 5px;
   background-color: rgb(256,256,256); 
-}
-.signupcarous{
-  width:48%;
-  height:95%;  
-  /* background-color: yellow; */
-
-}
-.signupotp{
-  width:48%;
-  height:95%;
-  display:flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  /* background-color: orange; */
 }
+
+
 .crossdiv{
   display:flex;
   align-items: center;
