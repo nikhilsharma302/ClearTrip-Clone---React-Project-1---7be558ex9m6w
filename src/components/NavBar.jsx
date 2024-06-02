@@ -1,14 +1,13 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { useNavigate,NavLink } from 'react-router-dom'
 import logo from './assets/logo.png'
 import HotelIcon from '@mui/icons-material/Hotel';
 import SignUp from './Modals/SignUp'
+import MyStore from './assets/Context';
 import PersonIcon from '@mui/icons-material/Person';
 import "../styles/App.css"
 export default function NavBar({pageType}) {
-  const [showportal,setShowportal]=useState(false)
-  const [isLoggedIn,setIsLoggedIn]=useState(false)
-  const[user,setUser]=useState("Traveller")
+  const {showportal,toggleLogin,user,loggedIn,changeUser,changeLoggedStatus}=useContext(MyStore)
   const[hover,setHover]=useState("hover")
   const navigate=useNavigate();
   function gotoHome(){
@@ -16,6 +15,11 @@ export default function NavBar({pageType}) {
   }
   function gotoHotels(){
     navigate('/hotels')
+  }
+  function logoutFn(){
+        changeUser("Traveller")
+        changeLoggedStatus(true)
+        localStorage.removeItem("loggedInUser")
   }
   return (
     <div className="navbar">
@@ -30,15 +34,22 @@ export default function NavBar({pageType}) {
           }
         </div>
         <div className="login">
-          <button className="userIcon" onClick={(e)=>setShowportal(!showportal)}>
+        {!loggedIn ?<button className="userIcon" onClick={(e)=>toggleLogin(showportal)}>
             <PersonIcon fontSize="large"/>
             <span>
                 Hi,{user}
             </span>
-          </button>
-          {/* <Button variant="contained" onClick={(e)=>setShowportal(!showportal)} sx={{margin:"5%"}}>{isLoggedIn?`Logout` :`Log In/Sign Up`}</Button> */}
+          </button>:<div className="login">
+          <PersonIcon fontSize="large"/><br/>
+            <span>
+                Hi,{user}
+            </span><br/>
+            <button onClick={logoutFn}>Logout</button>
+          </div>
+            
+          }
         </div>
-          {showportal&&<SignUp setShowportal={setShowportal}/>}  
+          {showportal&&<SignUp/>}  
     </div>
   )
 }

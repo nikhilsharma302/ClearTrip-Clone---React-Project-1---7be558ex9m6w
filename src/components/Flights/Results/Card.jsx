@@ -1,4 +1,5 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useContext} from 'react'
+import{useNavigate} from 'react-router-dom'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {FLIGHT_SEARCH_API,PROJECT_ID} from '../../assets/Constants'
@@ -12,6 +13,7 @@ import indigo from '../../assets/icons/indigo.png'
 import kingfisher from '../../assets/icons/kingfisher.png'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import MyStore from '../../assets/Context';
 const flightObj={
     "UK":{
         airline:"Vistara",
@@ -40,7 +42,7 @@ const flightObj={
 }
 let filterObj={}
 export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}) {
-    
+    const navigate=useNavigate()
     const [paramObj,setParamObj]=useState({})
     const [stopar,setStopar]=useState(false)
     const [tim,setTim]=useState(false)
@@ -60,15 +62,15 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
     const [datachange,setdatachange]=useState(true)
     const [indidata,setIndiData]=useState([]);
     const[Dates,setDates]=useState([]);
-    //const [dateeObject,setDateeObject]=useState(dateObject)
+    const {loggedIn}= useContext(MyStore)
     async function findMinAndMax(flightarr){
         if(flightarr&&flightarr.length>0){
             const newobj= await flightarr.map(single=>(
-                    Number(single.ticketPrice))
-                )
-        newobj.sort()
-        setMaxPrice(newobj[newobj.length-1])
-        setMinPrice(newobj[0]) 
+                Number(single.ticketPrice))
+            )
+            newobj.sort()
+            setMaxPrice(newobj[newobj.length-1])
+            setMinPrice(newobj[0]) 
         }  
     }
     useEffect(()=>{
@@ -106,7 +108,6 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
         sortFlights(paramObj)
     },[paramObj])
     async function callingdetails(iid){
-       
         try{
             const resp=await fetch(`https://academics.newtonschool.co/api/v1/bookingportals/flight/${iid}`,{headers:{
                 projectId:"f104bi07c490"
@@ -288,8 +289,6 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                 e.target.parentNode.parentNode.childNodes[2].classList.toggle("hidden")
                 iid=airflight._id
             }
-            
-
         })
     }
     function setfilterObj(e,{type}){
@@ -303,6 +302,24 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
         }
           
         flightFilter(filterObj) 
+    }
+    function bookSeat(e){
+        if(!loggedIn){
+            alert("Please login before booking seats");
+            navigate("/login")
+        }
+        else{
+            const flightDetails=flightarr.find(flight=>flight._id===e.target.parentNode.parentNode. parentNode.parentNode.id)
+            //console.log(e.target.parentNode.parentNode.parentNode.parentNode.id)
+            //console.log(flightDetails)
+            navigate("/flight-confirm",{
+                state:{
+                    flightDetails,
+                    srci,
+                    desti,dateeString
+                }
+            })
+        }
     }
     return (
         flightarr && flightarr.length>0 && <div className="flightmain">
@@ -440,7 +457,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                 <tbody >
                     {
                     flightarr.map(airline=>(
-                        <tr key={airline._id} className="flightDataBodyRow">
+                        <tr key={airline._id} id={airline._id} className="flightDataBodyRow">
                             <td>
                                 <div className="flexTd" >
                                     <span className="flightCard">
@@ -458,7 +475,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                                     
                                     <span>&#8377; {airline.ticketPrice}</span>
                                      <span>
-                                        <button className="bookBtn">Book</button>
+                                        <button className="bookBtn" onClick={bookSeat}>Book</button>
                                     </span>
                                 </div>
                                 <div onClick={(e)=>showFlightDet(e)} 
@@ -479,14 +496,16 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                                                 <div className="flightCardDirection">
                                                     <div className="flex">
                                                         <span>
-                                                            {singleflight.source} 
+                                                            {/* {singleflight.source}  */}
+                                                            {srci.split(" - ")[1].split(",")[0]}
                                                         </span>
                                                         
                                                         <span>
                                                             <ArrowRightAltIcon/>
                                                         </span>
                                                         <span>
-                                                            {singleflight.destination}
+                                                            {/* {singleflight.destination} */}
+                                                            {desti.split(" - ")[1].split(",")[0]}
                                                         </span> 
                                                     </div>
                                                     <span>

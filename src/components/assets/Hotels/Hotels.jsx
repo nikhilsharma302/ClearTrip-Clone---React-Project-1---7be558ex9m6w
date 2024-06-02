@@ -88,14 +88,20 @@ export default function Hotels(){
         
         <div className="calender" style={{width:"80%"}}>
           <div className="dates">
-            <DatePicker
-              label="Check-in"
-              sx={{width:"40%",marginRight:"0"} }
+            <div style={{display:"flex",flexDirection:"column",width:"48%",alignItems:"center",justifyContent:"center"}}>
+              <label htmlFor='Check-In'>Check-In date</label>
+              <DatePicker
+              //placeholder="Check-In"
+              sx={{width:"100%",marginRight:"0"} }
             />
-            <DatePicker
-              label="Check-out"
-              sx={{width:"40%"} }
+            </div>
+            <div style={{display:"flex",width:"48%", flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+              <label htmlFor='Check-Out'>Check-Out Date</label>
+              <DatePicker
+              //placeholder="Check-Out"
+              sx={{width:"100%",marginRight:"0"} }
             />
+            </div> 
           </div>
           <div id="usercheckinoutshow" >
             <div onClick={showdiv} className="hoteliconshow">

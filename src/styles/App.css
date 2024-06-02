@@ -73,10 +73,11 @@
 .login{
   display:flex;
   width:30vw;
-  justify-content: flex-end;
+  justify-content:flex-start;
   align-items: center;
   height:80%;
 }
+
 .userIcon{
   display: flex;
   flex-direction: column;
@@ -267,7 +268,7 @@
 }
 .persons{
   position:absolute;
-  top:42%;
+  top:45%;
   left:25%;
   width: 40%;
   height:fit-content;
@@ -438,8 +439,8 @@
 .portal{
   height:100vh;
   width:99vw; 
-  /* background-color:black;
-  opacity: .9; */
+  /* background-color:black; */
+  /* opacity: .9; */
   position:fixed;
   top:0;
   left:0;
@@ -474,11 +475,9 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  background-color: rgb(256,256,256); 
+  background-color: rgba(256,256,256,1); 
   flex-direction: column;
 }
-
-
 .crossdiv{
   display:flex;
   align-items: center;

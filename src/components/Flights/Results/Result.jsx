@@ -24,7 +24,6 @@ export default function Result() {
   const[label,setLabel]=useState(location?.state?.fulldate)
   const[day,setDay]=useState("");
   const [dateeString,setDateeString]=useState(location?.state?.dateString)
- 
   async function searchingPort(value,iptype){
     setsrcair(false);
     setdestair(false);

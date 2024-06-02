@@ -26,7 +26,7 @@ export default function HotelCards() {
   },[])
   async function callfilteredData(obj){
     let neobj=JSON.stringify(obj)
-    console.log("neobj is ",neobj)
+    //console.log("neobj is ",neobj)
     try{
       const resp=await fetch(`
       https://academics.newtonschool.co/api/v1/bookingportals/hotel?search={"location":"${city}"}&sort=${neobj}`

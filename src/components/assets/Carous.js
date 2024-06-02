@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function Carous({offerarr}) {
-  console.log(offerarr)
+  //console.log(offerarr)
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = offerarr.length;

@@ -1,22 +1,35 @@
-import React,{useRef} from 'react'
+import React,{useRef,useContext} from 'react'
 import NavBar from '../../NavBar'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import PlaceIcon from '@mui/icons-material/Place';
 import TextField from '@mui/material/TextField'
 import {DatePicker} from '@mui/x-date-pickers'
 import {useLocation,useNavigate} from 'react-router-dom'
+import MyStore from '../Context';
 import './Hotels.css'
 import { PROJECT_ID } from '../Constants';
 export default function IndividualHotelDetails() {
+    const {loggedIn}=useContext(MyStore)
     const ref1=useRef()
     const ref2=useRef()
     const ref3=useRef()
     const location=useLocation()
+
     const navigate=useNavigate()
     
-        if(location?.state==null || location?.state?.data?._id==null){
-            navigate("/hotels")
+    if(location?.state==null || location?.state?.data?._id==null){
+        navigate("/hotels")
+    }
+    function bookSeat(){
+        alert(loggedIn)
+        if(!loggedIn){
+            alert("Please login before booking seats");
+            navigate("/login")
         }
+        else{
+            
+        }
+    }
     function displayselected(e){
         e.stopPropagation()
         let array = Array.prototype.slice.call(e.target.parentNode.childNodes)
@@ -120,7 +133,7 @@ export default function IndividualHotelDetails() {
                                     <div> Taxes: {room.costDetails.taxesAndFees}</div>
                                     <div> Discount: {room.costDetails.discount}</div>
                                 </div>
-                                <button>Book Now</button>
+                                <button onClick={bookSeat}>Book Now</button>
                                 
                             </div>
                         ))
@@ -133,7 +146,7 @@ export default function IndividualHotelDetails() {
             <button onClick={showimgs}>Show all images</button>
             <div className="hoteroomprice">
                 <span>{`${location?.state?.data?.rooms[0]?.costDetails.baseCost} + ₹${location?.state?.data?.rooms[0]?.costDetails.taxesAndFees} tax / night`}</span>
-                <button>Select Room</button>
+                <button >Select Room</button>
             </div>
         </div>
       </div>
