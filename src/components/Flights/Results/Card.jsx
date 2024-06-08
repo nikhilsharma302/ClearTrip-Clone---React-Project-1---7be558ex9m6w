@@ -311,7 +311,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
         else{
             const flightDetails=flightarr.find(flight=>flight._id===e.target.parentNode.parentNode. parentNode.parentNode.id)
             //console.log(e.target.parentNode.parentNode.parentNode.parentNode.id)
-            //console.log(flightDetails)
+        
             navigate("/flight-confirm",{
                 state:{
                     flightDetails,
@@ -524,12 +524,12 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                                                         <div>{singleflight.flightID.split("-")[0]} {singleflight.departureTime}</div>
                                                     </div>
                                                     
-                                                    <div>{singleflight.source.toUpperCase()} {singleflight.arrivalTime}</div>
+                                                    <div>{singleflight.source.toUpperCase()} {singleflight.departureTime}</div>
                                                     <div className="clockincon"> 
                                                         <AccessTimeIcon/>
                                                         <span>{singleflight.duration}h</span>        
                                                     </div>
-                                                    <div>{singleflight.destination.toUpperCase()} {singleflight.departureTime}</div>
+                                                    <div>{singleflight.destination.toUpperCase()} {singleflight.arrivalTime}</div>
                                                     <div className="amneties">
                                                         {
                                                             singleflight.amenities.map((item)=>(

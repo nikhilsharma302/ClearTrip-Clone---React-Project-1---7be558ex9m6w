@@ -5,3 +5,4 @@ export const SECTION_OFFER_URL=
 'https://academics.newtonschool.co/api/v1/bookingportals/offers?filter={"type":'
 export default FLIGHT_PAGE_BASE_API;
 export const PROJECT_ID="f104bi07c490"
+export const FLIGHT_BOOKING_API="https://academics.newtonschool.co/api/v1/bookingportals/booking"

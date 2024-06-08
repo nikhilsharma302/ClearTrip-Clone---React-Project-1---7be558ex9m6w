@@ -80,7 +80,7 @@ export default function SignUp() {
       },
       body: JSON.stringify(userdata)
       });
-      //console.log(resp) 
+      
       const response = await resp.json();
       if(resp.status===403){
         alert(`${response.message}, Please Login with your credentials` )

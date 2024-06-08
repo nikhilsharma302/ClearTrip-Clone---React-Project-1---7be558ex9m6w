@@ -17,7 +17,7 @@ export default function Flights() {
   const navigate=useNavigate();
   const [airportList, setAirportList]=useState([]);
   const [showcomp,setShowComp]=useState(false);
-  const {setFilteredData}=useContext(MyStore)
+  const {setFilteredData,setDepartDate,departDate}=useContext(MyStore)
   const[adults,setAdults]=useState(1);
   const[children,setChildren]=useState(0);
   const[infants,setInfants]=useState(0);
@@ -98,9 +98,21 @@ export default function Flights() {
     setSeatClass(e.target.innerText)
   }
   function setCalenderDate(e){
-    let dat= new Date(e).toDateString()
-    
+    let dat= new Date(e).toDateString() 
+    const year=e["$y"];
+    let month=e["$M"];
+    month++;
+    if(month.toString().length===1){
+      month="0"+""+month
+    }
+    let datine=e["$D"];
+  
+    if(datine.toString().length===1){
+      datine="0"+""+datine
+    }
+    setDepartDate(`${year}-${month}-${datine}T`)
     const date = e?.$d
+    //console.log("departDate is ",departDate)
     setfullDate(date.toLocaleDateString())
     setDateString(dat)
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -121,7 +133,7 @@ export default function Flights() {
         }
         else{
           const response=await resp.json();
-          
+          //console.log(fulldate)
           navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`$ {children}`,
           "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination,"fulldate":fulldate,"dateString":dateString}})
           

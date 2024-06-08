@@ -13,8 +13,10 @@ import IndividualHotelDetails from "./assets/Hotels/IndividualHotelDetails";
 import IndiCardImg from "./assets/Hotels/IndiCardImg";
 import FlightBookingConfirm from "./bookingconfirmation/FlightBookingConfirm";
 import HotelBookingConfirm from "./bookingconfirmation/HotelBookingConfirm";
+import FlightBookingSuccess from "./bookingconfirmation/FlightBookingSuccess";
 import Login from "./Login";
 import SignUp from "./Modals/SignUp";
+import FlightTicket from "./bookingconfirmation/FlightTicket";
 import {useState} from 'react'
 import Result from "./Flights/Results/Result";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -23,8 +25,13 @@ import ErrorHTML from "./ErrorHTML";
  function App() {
   const [filteredData, setFilteredData]=useState("")
   const [loggedUserData,setLoggedUserData]=useState(localStorage.getItem("loggedInUser")?JSON.parse(localStorage.getItem("loggedInUser")):{})
+  const [departDate,setDepartDate]=useState("")
   const [loggedIn, setIsLoggedIn]=useState(loggedUserData.status=="success"?true:false)
-
+  function logoutFn(){
+    changeUser("Traveller")
+    changeLoggedStatus(true)
+    localStorage.removeItem("loggedInUser")
+  }
   function changeLoggedStatus(loggedIn){
     setIsLoggedIn(!loggedIn)
   }
@@ -36,9 +43,10 @@ import ErrorHTML from "./ErrorHTML";
   function changeUser(name){
     setUser(name)
   }
+
   return (
   
-  <MyStore.Provider value={{"filteredData":filteredData,"setFilteredData":setFilteredData,loggedIn,changeLoggedStatus,showportal,toggleLogin,user,changeUser}}>
+  <MyStore.Provider value={{"filteredData":filteredData,"setFilteredData":setFilteredData,loggedIn,changeLoggedStatus,showportal,toggleLogin,user,changeUser,departDate,setDepartDate,logoutFn}}>
      <LocalizationProvider dateAdapter={AdapterDayjs}>
     <div className="App">
       <BrowserRouter>
@@ -60,6 +68,8 @@ import ErrorHTML from "./ErrorHTML";
           <Route path="/login-error" element={<ErrorHTML/>}  target='_blank'/>
           <Route path="/flight-confirm" element={<FlightBookingConfirm/>}/>
           <Route path="/hotel-confirm" element={<HotelBookingConfirm/>}/>
+          <Route path="/flightBooking/confirm" element={<FlightBookingSuccess/>} target='_blank'/>
+          <Route path ="/flightBooking/confirm/ticket" element={<FlightTicket/>} target ='_blank'/>
         </Routes>  
       </BrowserRouter>
     </div>

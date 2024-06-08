@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import { useNavigate,NavLink } from 'react-router-dom'
 import logo from './assets/logo.png'
 import HotelIcon from '@mui/icons-material/Hotel';
@@ -7,8 +7,8 @@ import MyStore from './assets/Context';
 import PersonIcon from '@mui/icons-material/Person';
 import "../styles/App.css"
 export default function NavBar({pageType}) {
-  const {showportal,toggleLogin,user,loggedIn,changeUser,changeLoggedStatus}=useContext(MyStore)
-  const[hover,setHover]=useState("hover")
+
+  const {showportal,toggleLogin,user,loggedIn,changeUser,changeLoggedStatus,logoutFn}=useContext(MyStore)
   const navigate=useNavigate();
   function gotoHome(){
     navigate('/')
@@ -16,11 +16,7 @@ export default function NavBar({pageType}) {
   function gotoHotels(){
     navigate('/hotels')
   }
-  function logoutFn(){
-        changeUser("Traveller")
-        changeLoggedStatus(true)
-        localStorage.removeItem("loggedInUser")
-  }
+  
   return (
     <div className="navbar">
         <div className="logocontainer" >

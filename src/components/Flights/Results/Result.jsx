@@ -1,4 +1,4 @@
-import  React,{useState,useEffect} from 'react';
+import  React,{useState,useEffect,useContext} from 'react';
 import Button from '@mui/material/Button';
 import { FLIGHT_SEARCH_API } from '../../assets/Constants.jsx';
 import {useLocation} from 'react-router-dom'
@@ -11,8 +11,9 @@ import NavBar from '../../NavBar.jsx';
 import {PROJECT_ID} from '../../assets/Constants.jsx'
 import ShowPort from '../../Modals/ShowPort.jsx';
 import "../../../styles/App.css"
+import MyStore from '../../assets/Context.jsx';
 export default function Result() {
- 
+  const {setDepartDate,departDate}=useContext(MyStore)
   const location=useLocation();
   const[srci, setSource]=useState(location?.state?.source)
   const[desti, setDestination]=useState(location?.state?.destination)
@@ -80,15 +81,11 @@ export default function Result() {
     setDestination(dest)
   }
   function setCalenderDate(e){
-    
     const date = e?.$d
-   
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const reqday= daysOfWeek[date.getDay()];
-    
+    const reqday= daysOfWeek[date.getDay()];  
     setDay(reqday)
     setDateeString(new Date(e.$d).toDateString())
-    
   }
   async function searchFlights(){
     setFlightArr([])
@@ -112,6 +109,19 @@ export default function Result() {
         console.log(err)
       }
     }
+  }
+  function setdepartingDate(e){
+    const year=e["$y"];
+    let month=e["$M"];
+    month++;
+    if(month.toString().length===1){
+      month="0"+""+month
+    }
+    let datine=e["$D"];
+    if(datine.toString().length===1){
+      datine="0"+""+datine
+    }
+    setDepartDate(`${year}-${month}-${date}T`)
   }
   return (
       <>
@@ -147,7 +157,7 @@ export default function Result() {
             }
             </div>
             
-            <DatePicker label={label} onChange={(e)=>setCalenderDate(e)} sx={{width: '1/3',height: '2.8',mb:"2%"}}/>
+            <DatePicker label={label} onChange={(e)=>{setCalenderDate(e),setdepartingDate(e)}} sx={{width: '1/3',height: '2.8',mb:"2%"}}/>
           </div>
           <div className="resultsBtnsel">
             <Select labelId="" id="demo-simple-select" value={sel} sx={{minWidth: '100',height: '90%'}} onChange={(e)=>setSel(e.target.value)} renderValue={(sel) => (

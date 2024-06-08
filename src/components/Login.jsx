@@ -3,7 +3,6 @@ import NavBar from './NavBar'
 import MyStore from './assets/Context'
 import {useNavigate,NavLink} from 'react-router-dom'
 import { PROJECT_ID } from './assets/Constants'
-import { RestorePage } from '@mui/icons-material'
 export default function Login() {
   const {changeUser,changeLoggedStatus}=useContext(MyStore)
   const {showportal,toggleLogin}=useContext(MyStore);
@@ -37,7 +36,6 @@ export default function Login() {
         localStorage.setItem("loggedInUser",JSON.stringify(response))
         const token=response.token;
         const {name,email}=response.data.user;
-       
         changeUser(name)
         changeLoggedStatus(false)
         navigate("/")
