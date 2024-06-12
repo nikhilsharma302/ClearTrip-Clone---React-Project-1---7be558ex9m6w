@@ -1,33 +1,40 @@
-import React,{useRef,useContext} from 'react'
+import React,{useRef,useContext,useState} from 'react'
 import NavBar from '../../NavBar'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import PlaceIcon from '@mui/icons-material/Place';
-import TextField from '@mui/material/TextField'
-import {DatePicker} from '@mui/x-date-pickers'
+// import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+// import PlaceIcon from '@mui/icons-material/Place';
+// import TextField from '@mui/material/TextField'
+// import {DatePicker} from '@mui/x-date-pickers'
 import {useLocation,useNavigate} from 'react-router-dom'
 import MyStore from '../Context';
 import './Hotels.css'
-import { PROJECT_ID } from '../Constants';
-export default function IndividualHotelDetails() {
+
+export default function IndividualHotelDetails({}) {
     const {loggedIn}=useContext(MyStore)
     const ref1=useRef()
     const ref2=useRef()
     const ref3=useRef()
     const location=useLocation()
-
     const navigate=useNavigate()
-    
+    const hotelId=location?.state?.data?._id
+    //const {departDate,setDepartDate,arrivDate,setArrivDate}=useContext(MyStore)
     if(location?.state==null || location?.state?.data?._id==null){
         navigate("/hotels")
     }
-    function bookSeat(){
-        alert(loggedIn)
+    function bookSeat(hotelId,roomType,costPerNight,roomSize,price,bedDetail,baseCost,taxesAndFees,discount){
         if(!loggedIn){
             alert("Please login before booking seats");
-            navigate("/login")
+            window.open("/login","_blank")
         }
         else{
-            
+           console.log(baseCost,taxesAndFees,discount)
+            navigate(`/hotel-confirm/hotel=${hotelId}`,{
+                state:{
+                    "locate":location?.state,
+                    
+                    hotelId,roomType,costPerNight,roomSize,price,
+                    bedDetail,baseCost,taxesAndFees,discount
+                }
+            })
         }
     }
     function displayselected(e){
@@ -69,27 +76,40 @@ export default function IndividualHotelDetails() {
         window.open(`/hotels/details/${location.state.data._id}/img/?images=${encodedUrls}`, "_blank");
     }
   return (
-    <div className="hoteldetails">
+    <React.Fragment>
         <NavBar className="navBar"/>
-        <div className="hotelCardsNavBaritems">
-            <div className="landmarkrow" 
-            onClick={()=>setDivClicked(true)} 
-            >
-                <LocationOnOutlinedIcon/>
-                <PlaceIcon style={{color:"#da8210"}}/>
-                <TextField fullWidth id="outlined-basic"                  
-                    variant="standard" 
-                    InputProps={{disableUnderline: true }}
-                />
-            </div>
-            <DatePicker
-                label="Check-in"
+        <div className="hoteldetails">
+        {/*  */}
+            <div className="hotelCardsNavBaritems">
+                {/* <div className="landmarkrow" 
+                    onClick={()=>setDivClicked(true)} 
+                >
+                    <LocationOnOutlinedIcon/>
+                    <PlaceIcon style={{color:"#da8210"}}/>
+                    <TextField fullWidth id="outlined-basic"                  
+                        variant="standard" 
+                        InputProps={{disableUnderline: true }}   
+                    />
+                </div> */}
+            
+            {/* <div>
+                Check-In */}
+            
+            {/* <DatePicker
                 sx={{width:"20%",marginRight:"0"} }
+                onChange={(e)=>setDepartDate(e.$d)}
+                label={departDate}
             />
+            </div>
+            <div>
+            Check-out
             <DatePicker
-                label="Check-out"
                 sx={{width:"20%"} }
+                label={arrivDate}
+                onChange={(e)=>setArriveDate(e.$d)}
             />
+            </div> */}
+           
         </div>
       <div className="hotecardmainsection">
         <div className="hotelcardproperties">
@@ -98,7 +118,7 @@ export default function IndividualHotelDetails() {
                 <li onClick={displayselected}>Amneties</li>
                 <li onClick={displayselected}>Rooms</li>
             </ul>
-            <div className="General hidden" ref={ref1}>
+            <div className="General" ref={ref1}>
                 <h1>
                     {location?.state?.data?.name} 
                 </h1>
@@ -133,7 +153,7 @@ export default function IndividualHotelDetails() {
                                     <div> Taxes: {room.costDetails.taxesAndFees}</div>
                                     <div> Discount: {room.costDetails.discount}</div>
                                 </div>
-                                <button onClick={bookSeat}>Book Now</button>
+                                <button onClick={()=>bookSeat(hotelId,room.roomType,room.costPerNight,room.roomSize,room.price,room.bedDetail,room.costDetails.baseCost,room.costDetails.taxesAndFees,room.costDetails.discount)}>Book Now</button>
                                 
                             </div>
                         ))
@@ -152,5 +172,6 @@ export default function IndividualHotelDetails() {
       </div>
       
     </div>
+    </React.Fragment>
   )
 }

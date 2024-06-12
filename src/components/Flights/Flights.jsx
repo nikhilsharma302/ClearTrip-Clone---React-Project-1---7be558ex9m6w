@@ -136,7 +136,6 @@ export default function Flights() {
           //console.log(fulldate)
           navigate("/flights/results" ,{state:{adults:`${adults}`,"childs":`$ {children}`,
           "infants":`${infants}`,"class":`${seatClass}`,"searchedFlights":response.data.flights,"source":source,"destination":destination,"fulldate":fulldate,"dateString":dateString}})
-          
         }
       }catch(err){
         console.log(err)

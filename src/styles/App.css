@@ -777,3 +777,21 @@
   /* border: .2px solid gray; */
   box-shadow: none;
 }
+.hotelsearch{
+  position:relative;
+  background-color: green;
+}
+#cityList{
+  position:absolute;
+  top:60px;
+  z-index:999;
+  width:fit-content;
+  height: fit-content;
+  padding:2%;
+  border:1px solid black;
+  border-radius: 5%;
+  list-style-type: none;
+  text-align: left;
+  opacity:1;
+  background-color: white;
+}

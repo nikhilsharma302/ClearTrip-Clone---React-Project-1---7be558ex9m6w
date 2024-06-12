@@ -246,3 +246,52 @@
     align-items: center;
     text-align: left;
 }
+
+.hotebookingmain{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width:95vw;
+    height: fit-content;
+    
+}
+.bookingsummarysection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    width:30vw;
+    height:fit-content;
+    border:2px solid gray;
+    padding:2%;
+    border-radius:10px;
+      
+}
+.hotelclientdetails{
+    width:30vw;
+    height:fit-content;
+    text-align: left;
+    line-height: 3;
+    margin:auto auto;
+    border:2px solid gray;
+    padding:2%;
+    border-radius:10px;
+}
+.hotelclientdetails input, .hotelclientdetails textarea{
+    padding:1%;
+    border-radius: 10%;
+}
+.bookingsummarysection > div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:100%;
+    height:fit-content
+}
+#total{
+    background-color: pink;
+    color:red
+}

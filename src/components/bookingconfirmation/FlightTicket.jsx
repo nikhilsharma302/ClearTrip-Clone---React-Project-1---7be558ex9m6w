@@ -32,14 +32,14 @@ export default function FlightTicket() {
     {
     status==="Confirmed" &&
     <ul>
-      <li><h3>Flight Id: </h3>{airline.flightID}</li>
+      <li><h3>Flight Id: </h3>{airline?.flightID}</li>
       <li><h3>Ticket Number: </h3>{ticket}</li>
     </ul>}
     <li><h3>Source: </h3>{srci}</li>
-    <li><h3>Departure Date and Time: </h3>{airline.departureTime}</li>
+    <li><h3>Departure Date and Time: </h3>{airline?.departureTime}</li>
     <li><h3>Destination :</h3>{desti}</li>
-    <li><h3>Arrival Date and Time: </h3>{airline.arrivalTime}</li> 
-    <li><h3>Duration: </h3>{airline.duration}h</li>
+    <li><h3>Arrival Date and Time: </h3>{airline?.arrivalTime}</li> 
+    <li><h3>Duration: </h3>{airline?.duration}h</li>
     <li><h3>Ticket Price(inclusive of all Taxes)</h3>{totalPrice}</li>
     
 </ul>

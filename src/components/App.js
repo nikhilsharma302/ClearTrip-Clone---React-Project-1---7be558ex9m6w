@@ -12,8 +12,9 @@ import HotelCards from "./assets/Hotels/HotelCards";
 import IndividualHotelDetails from "./assets/Hotels/IndividualHotelDetails";
 import IndiCardImg from "./assets/Hotels/IndiCardImg";
 import FlightBookingConfirm from "./bookingconfirmation/FlightBookingConfirm";
-import HotelBookingConfirm from "./bookingconfirmation/HotelBookingConfirm";
+import HotelBookingConfirm from './bookingconfirmation/HotelBookingConfirm'
 import FlightBookingSuccess from "./bookingconfirmation/FlightBookingSuccess";
+import HotelTicketDisplay from "./bookingconfirmation/HotelTicketDisplay";
 import Login from "./Login";
 import SignUp from "./Modals/SignUp";
 import FlightTicket from "./bookingconfirmation/FlightTicket";
@@ -26,6 +27,7 @@ import ErrorHTML from "./ErrorHTML";
   const [filteredData, setFilteredData]=useState("")
   const [loggedUserData,setLoggedUserData]=useState(localStorage.getItem("loggedInUser")?JSON.parse(localStorage.getItem("loggedInUser")):{})
   const [departDate,setDepartDate]=useState("")
+  const [arrivDate,setArriveDate]=useState("")
   const [loggedIn, setIsLoggedIn]=useState(loggedUserData.status=="success"?true:false)
   function logoutFn(){
     changeUser("Traveller")
@@ -46,7 +48,7 @@ import ErrorHTML from "./ErrorHTML";
 
   return (
   
-  <MyStore.Provider value={{"filteredData":filteredData,"setFilteredData":setFilteredData,loggedIn,changeLoggedStatus,showportal,toggleLogin,user,changeUser,departDate,setDepartDate,logoutFn}}>
+  <MyStore.Provider value={{"filteredData":filteredData,"setFilteredData":setFilteredData,loggedIn,changeLoggedStatus,showportal,toggleLogin,user,changeUser,departDate,setDepartDate,logoutFn,arrivDate,setArriveDate}}>
      <LocalizationProvider dateAdapter={AdapterDayjs}>
     <div className="App">
       <BrowserRouter>
@@ -67,9 +69,11 @@ import ErrorHTML from "./ErrorHTML";
           <Route path="/register" element={<SignUp/>}/>
           <Route path="/login-error" element={<ErrorHTML/>}  target='_blank'/>
           <Route path="/flight-confirm" element={<FlightBookingConfirm/>}/>
-          <Route path="/hotel-confirm" element={<HotelBookingConfirm/>}/>
-          <Route path="/flightBooking/confirm" element={<FlightBookingSuccess/>} target='_blank'/>
-          <Route path ="/flightBooking/confirm/ticket" element={<FlightTicket/>} target ='_blank'/>
+          <Route path="/hotel-confirm/:hotel-Id" element={<HotelBookingConfirm/>}/>
+          <Route path="/hotels/booking/confirm-ticket" element={<HotelTicketDisplay/>}/>
+          <Route path="/flightBooking/confirm" element={<FlightBookingSuccess/>} t/>
+          <Route path ="/flightBooking/confirm/ticket" element={<FlightTicket/>} />
+          
         </Routes>  
       </BrowserRouter>
     </div>

@@ -306,7 +306,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
     function bookSeat(e){
         if(!loggedIn){
             alert("Please login before booking seats");
-            navigate("/login")
+            window.open("/login","_blank")
         }
         else{
             const flightDetails=flightarr.find(flight=>flight._id===e.target.parentNode.parentNode. parentNode.parentNode.id)
@@ -334,7 +334,7 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                             }</div>
                     </div>  
                     <div className={stopClass}>
-                        <input type="checkbox" name="group1" value="0"  onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="Non-stop" >Non-stop</label><br/>
+                        <input type="checkbox" name="group1" value="0"  onSelect={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="Non-stop" >Non-stop</label><br/>
                         <input type="checkbox" name="group1" value="1" onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="1stop">1 stop</label><br/>
                         <input type="checkbox" name="group1" value="2"  onChange={(e)=>setfilterObj(e,{type:"stops"})}/><label htmlFor="2stop">2 stop</label><br/>
                     </div>  
@@ -352,31 +352,31 @@ export default function Card({flightarr,setFlightArr,srci,desti,day,dateeString}
                     <div className={departClass}>
                         <div className="cardflex1 ">
                             <div>
-                                <input type="checkbox"  value="midnight-8 am" name="group2[]" onChange={(e)=>setfilterObj(e,{type:"departureTime"})} /><label htmlFor="Early morning">Early morning</label>
+                                <input type="checkbox"  value="midnight-8 am" name="group2" onChange={(e)=>setfilterObj(e,{type:"departureTime"})} /><label htmlFor="Early morning">Early morning</label>
                             </div>
                             <p >Midnight - 8 am</p>
                         </div>
                         <div className="cardflex1">
                             <div>
-                                <input type="checkbox" name="group2[]" /><label htmlFor="Morning">Morning</label>
+                                <input type="checkbox" name="group2" /><label htmlFor="Morning">Morning</label>
                             </div>
                             <p>8 am - Noon</p>
                         </div>
                         <div className="cardflex1">
                             <div>
-                                <input type="checkbox" name="group2[]" /><label htmlFor="Afternoon">Afternoon</label>
+                                <input type="checkbox" name="group2" /><label htmlFor="Afternoon">Afternoon</label>
                             </div>
                             <p>Noon - 4 pm</p>
                         </div>
                         <div className="cardflex1">
                             <div>
-                                <input type="checkbox" name="group2[]" /><label htmlFor="Afternoon">Afternoon</label>
+                                <input type="checkbox" name="group2" /><label htmlFor="Afternoon">Afternoon</label>
                             </div>
                             <p>4 pm - 8 pm</p>
                         </div>
                         <div className="cardflex1">
                             <div>
-                                <input type="checkbox" name="group2[]" /><label htmlFor="Night">Night</label>
+                                <input type="checkbox" name="group2" /><label htmlFor="Night">Night</label>
                             </div>
                             <p>8 pm - Midnight</p>
                         </div>

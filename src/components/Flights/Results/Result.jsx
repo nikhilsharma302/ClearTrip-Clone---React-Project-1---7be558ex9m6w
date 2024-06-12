@@ -25,7 +25,10 @@ export default function Result() {
   const[label,setLabel]=useState(location?.state?.fulldate)
   const[day,setDay]=useState("");
   const [dateeString,setDateeString]=useState(location?.state?.dateString)
+  console.log("label and typeof laber are ",label, typeof label)
   async function searchingPort(value,iptype){
+    //const setCalenderDate=location?.state?.setCalenderDate
+   
     setsrcair(false);
     setdestair(false);
     try{
@@ -121,7 +124,7 @@ export default function Result() {
     if(datine.toString().length===1){
       datine="0"+""+datine
     }
-    setDepartDate(`${year}-${month}-${date}T`)
+    setDepartDate(`${year}-${month}-${datine}T`)
   }
   return (
       <>
