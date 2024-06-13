@@ -10,9 +10,6 @@ export default function HotelTicketDisplay() {
         <div>
             <span>{response?.message}</span>
         </div>
-    </>
-    
-
-    
+    </>    
   )
 }

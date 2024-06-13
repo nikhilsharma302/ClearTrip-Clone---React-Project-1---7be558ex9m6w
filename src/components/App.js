@@ -1,6 +1,6 @@
 import "../styles/App.css";
 import PrivacyPolicy from "./assets/PrivacyPolicy";
-import {useEffect} from'react'
+
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Flights from "./Flights/Flights";
 import Layout from "./Layout";
@@ -20,6 +20,8 @@ import SignUp from "./Modals/SignUp";
 import FlightTicket from "./bookingconfirmation/FlightTicket";
 import {useState} from 'react'
 import Result from "./Flights/Results/Result";
+import FlightHistory from "./history/FlightHistory";
+import HotelHistory from "./history/HotelHistory";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import ErrorHTML from "./ErrorHTML";
@@ -73,6 +75,8 @@ import ErrorHTML from "./ErrorHTML";
           <Route path="/hotels/booking/confirm-ticket" element={<HotelTicketDisplay/>}/>
           <Route path="/flightBooking/confirm" element={<FlightBookingSuccess/>} t/>
           <Route path ="/flightBooking/confirm/ticket" element={<FlightTicket/>} />
+          <Route path="/flightbooking-history" element={<FlightHistory/>}/>
+          <Route path="/hotelbooking-history" element={<HotelHistory/>}/>
           
         </Routes>  
       </BrowserRouter>
